@@ -1,0 +1,17 @@
+@import "../styles/globals.css";
+
+@theme {
+  --color-brand: #c63ce2;
+
+  --color-brand-50: #fdf5fe;
+  --color-brand-100: #f8e9fe;
+  --color-brand-200: #f1d3fb;
+  --color-brand-300: #eab0f7;
+  --color-brand-400: #de81f1;
+  --color-brand-500: #c63ce2;
+  --color-brand-600: #b230c9;
+  --color-brand-700: #9625a6;
+  --color-brand-800: #7c2088;
+  --color-brand-900: #681f70;
+  --color-brand-950: #43084a;
+}
