@@ -11,6 +11,7 @@
     "format": "ultracite format"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.1.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.1.1",
     "@crxjs/vite-plugin": "^2.0.0",
+    "@cubejs-client/core": "^1.3.37",
     "@tailwindcss/language-server": "latest",
     "@types/chrome": "^0.0.313",
     "@types/node": "^22.13.14",

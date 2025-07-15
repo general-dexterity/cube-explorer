@@ -78,12 +78,12 @@ export default function App() {
 
           {/* Domains Section */}
           <div className="mb-6">
-            <label className="mb-2 block font-medium text-gray-700 text-sm">
+            <span className="mb-2 block font-medium text-gray-700 text-sm">
               Domains to Monitor
-            </label>
+            </span>
             <div className="space-y-2">
               {settings.domains.map((domain, index) => (
-                <div className="flex gap-2" key={index}>
+                <div className="flex gap-2" key={domain}>
                   <input
                     className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => updateDomain(index, e.target.value)}
@@ -92,18 +92,18 @@ export default function App() {
                     value={domain}
                   />
                   <button
-                    type="button"
                     className="px-3 py-2 text-red-600 text-sm hover:text-red-800"
                     onClick={() => removeDomain(index)}
+                    type="button"
                   >
                     Remove
                   </button>
                 </div>
               ))}
               <button
-                type="button"
                 className="text-blue-600 text-sm hover:text-blue-800"
                 onClick={addDomain}
+                type="button"
               >
                 + Add Domain
               </button>
@@ -112,12 +112,12 @@ export default function App() {
 
           {/* Endpoints Section */}
           <div className="mb-6">
-            <label className="mb-2 block font-medium text-gray-700 text-sm">
+            <span className="mb-2 block font-medium text-gray-700 text-sm">
               API Endpoints
-            </label>
+            </span>
             <div className="space-y-2">
               {settings.endpoints.map((endpoint, index) => (
-                <div className="flex gap-2" key={index}>
+                <div className="flex gap-2" key={endpoint}>
                   <input
                     className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => updateEndpoint(index, e.target.value)}
@@ -126,18 +126,18 @@ export default function App() {
                     value={endpoint}
                   />
                   <button
-                    type="button"
                     className="px-3 py-2 text-red-600 text-sm hover:text-red-800"
                     onClick={() => removeEndpoint(index)}
+                    type="button"
                   >
                     Remove
                   </button>
                 </div>
               ))}
               <button
-                type="button"
                 className="text-blue-600 text-sm hover:text-blue-800"
                 onClick={addEndpoint}
+                type="button"
               >
                 + Add Endpoint
               </button>
@@ -146,14 +146,14 @@ export default function App() {
 
           {/* JWT Tokens Section */}
           <div className="mb-6">
-            <label className="mb-2 block font-medium text-gray-700 text-sm">
+            <span className="mb-2 block font-medium text-gray-700 text-sm">
               JWT Tokens (per domain)
-            </label>
+            </span>
             {settings.domains.map((domain) => (
               <div className="mb-2" key={domain}>
-                <label className="mb-1 block text-gray-500 text-xs">
+                <span className="mb-1 block text-gray-500 text-xs">
                   {domain}
-                </label>
+                </span>
                 <input
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   onChange={(e) =>
@@ -196,13 +196,13 @@ export default function App() {
           {/* Save Button */}
           <div className="flex justify-end">
             <button
-              type="button"
               className={`rounded-md px-4 py-2 font-medium text-sm transition-colors ${
                 saved
                   ? 'bg-green-600 text-white'
                   : 'bg-blue-600 text-white hover:bg-blue-700'
               }`}
               onClick={saveSettings}
+              type="button"
             >
               {saved ? 'Saved!' : 'Save Settings'}
             </button>

@@ -6,9 +6,25 @@
   },
   "linter": {
     "rules": {
+      "suspicious": {
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["info", "error"]
+          }
+        }
+      },
       "nursery": {
         "noUnknownAtRule": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["./.claude/settings.local.json"],
+      "linter": {
+        "enabled": false
+      }
+    }
+  ]
 }

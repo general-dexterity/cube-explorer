@@ -1,3 +1,21 @@
+// Re-export CubeJS types
+export type {
+  BinaryFilter,
+  BinaryOperator,
+  Filter,
+  LoadResponse as CubeResponse,
+  LogicalAndFilter,
+  LogicalOrFilter,
+  Meta as CubeMeta,
+  Query as CubeQuery,
+  UnaryFilter,
+  UnaryOperator,
+} from '@cubejs-client/core';
+
+// Import types for internal use
+import type { LoadResponse, Query } from '@cubejs-client/core';
+
+// Extension-specific types
 export interface Settings {
   domains: string[];
   endpoints: string[];
@@ -5,34 +23,13 @@ export interface Settings {
   autoCapture: boolean;
 }
 
-export interface CubeQuery {
-  measures?: string[];
-  dimensions?: string[];
-  filters?: unknown[];
-  timeDimensions?: unknown[];
-}
-
-export interface CubeResponse {
-  data?: unknown;
-  annotation?: unknown;
-}
-
 export interface CubeRequest {
   id: string;
   url: string;
-  query: CubeQuery;
-  response: CubeResponse;
+  query: Query;
+  response: LoadResponse<unknown>;
   timestamp: number;
   duration?: number;
   status: number;
   domain: string;
-}
-
-export interface CubeMeta {
-  cubes: Array<{
-    name: string;
-    title?: string;
-    measures: Array<{ name: string; title?: string; type: string }>;
-    dimensions: Array<{ name: string; title?: string; type: string }>;
-  }>;
 }
