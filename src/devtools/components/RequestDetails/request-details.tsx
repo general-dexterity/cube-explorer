@@ -83,7 +83,7 @@ export function RequestDetails({ request }: RequestDetailsProps) {
           </div>
         )}
 
-        {activeTab === 'response' && request.response.error && (
+        {activeTab === 'response' && request.response?.error && (
           <div className="space-y-4">
             <div>
               <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
@@ -94,7 +94,7 @@ export function RequestDetails({ request }: RequestDetailsProps) {
           </div>
         )}
 
-        {activeTab === 'response' && !request.response.error && (
+        {activeTab === 'response' && request.response.error === undefined && (
           <div className="space-y-4">
             <div>
               <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
