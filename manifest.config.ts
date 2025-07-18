@@ -16,5 +16,4 @@ export default defineManifest({
   host_permissions: ['<all_urls>'],
 
   devtools_page: 'src/devtools/devtools.html',
-  options_page: 'src/options/options.html',
 });

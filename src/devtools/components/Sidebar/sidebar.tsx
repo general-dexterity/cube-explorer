@@ -3,8 +3,10 @@ import {
   MagnifyingGlassIcon,
   TrashIcon,
 } from '@phosphor-icons/react';
+import { useState } from 'react';
 import type { CubeRequest, Settings } from '../../../types';
 import { RequestItem } from './request-item';
+import { SettingsPanel } from './settings-panel';
 
 interface SidebarProps {
   requests: CubeRequest[];
@@ -14,7 +16,6 @@ interface SidebarProps {
   onFilterChange: (filter: string) => void;
   onRequestSelect: (request: CubeRequest) => void;
   onClearRequests: () => void;
-  onOpenSettings: () => void;
 }
 
 export function Sidebar({
@@ -25,8 +26,8 @@ export function Sidebar({
   onFilterChange,
   onRequestSelect,
   onClearRequests,
-  onOpenSettings,
 }: SidebarProps) {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const filteredRequests = requests.filter((req) =>
     JSON.stringify(req.query).toLowerCase().includes(filter.toLowerCase())
   );
@@ -50,7 +51,7 @@ export function Sidebar({
             </button>
             <button
               className="p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-              onClick={onOpenSettings}
+              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
               title="Settings"
               type="button"
             >
@@ -74,6 +75,12 @@ export function Sidebar({
           </div>
         )}
       </div>
+
+      {/* Settings Panel */}
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
 
       {/* Request List */}
       <div className="flex-1 overflow-auto dark:bg-gray-800">

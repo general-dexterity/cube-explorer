@@ -9,12 +9,6 @@ export function QuerySection({ title, items, color }: QuerySectionProps) {
     return null;
   }
 
-  const colorClasses = {
-    blue: 'bg-blue-50 text-blue-700 border-blue-200',
-    green: 'bg-green-50 text-green-700 border-green-200',
-    yellow: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-  };
-
   return (
     <div>
       <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
@@ -23,7 +17,10 @@ export function QuerySection({ title, items, color }: QuerySectionProps) {
       <div className="flex flex-wrap gap-1">
         {items.map((item) => (
           <span
-            className={`inline-flex items-center rounded-md border px-2 py-1 font-medium text-xs ${colorClasses[color]}`}
+            className="inline-flex items-center rounded-md border px-2 py-1 font-medium text-xs data-blue:border-blue-200 data-green:border-green-200 data-yellow:border-yellow-200 data-blue:bg-blue-50 data-green:bg-green-50 data-yellow:bg-yellow-50 data-blue:text-blue-700 data-green:text-green-700 data-yellow:text-yellow-700"
+            data-blue={color === 'blue' || undefined}
+            data-green={color === 'green' || undefined}
+            data-yellow={color === 'yellow' || undefined}
             key={item}
           >
             {item}

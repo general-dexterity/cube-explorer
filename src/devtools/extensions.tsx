@@ -4,7 +4,7 @@ import { EmptyState } from './components/empty-state';
 import { RequestDetails } from './components/RequestDetails/request-details';
 import { Sidebar } from './components/Sidebar/sidebar';
 
-export default function App() {
+export default function Extensions() {
   const [requests, setRequests] = useState<CubeRequest[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<CubeRequest | null>(
     null
@@ -84,10 +84,6 @@ export default function App() {
     };
   }, [settings]);
 
-  const openSettings = () => {
-    chrome.runtime.openOptionsPage();
-  };
-
   const clearRequests = () => {
     setRequests([]);
     setSelectedRequest(null);
@@ -99,7 +95,6 @@ export default function App() {
         filter={filter}
         onClearRequests={clearRequests}
         onFilterChange={setFilter}
-        onOpenSettings={openSettings}
         onRequestSelect={setSelectedRequest}
         requests={requests}
         selectedRequest={selectedRequest}

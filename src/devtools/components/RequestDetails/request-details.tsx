@@ -36,11 +36,8 @@ export function RequestDetails({ request }: RequestDetailsProps) {
         <nav className="flex space-x-8 px-4">
           {(['query', 'response', 'headers'] as const).map((tab) => (
             <button
-              className={`border-b-2 px-1 py-2 font-medium text-xs capitalize transition-colors ${
-                activeTab === tab
-                  ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300'
-              }`}
+              className="border-transparent border-b-2 px-1 py-2 font-medium text-gray-500 text-xs capitalize transition-colors hover:border-gray-300 hover:text-gray-700 data-active:border-blue-500 data-active:text-blue-600 dark:text-gray-400 data-active:dark:text-blue-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+              data-active={activeTab === tab || undefined}
               key={tab}
               onClick={() => setActiveTab(tab)}
               type="button"
@@ -86,7 +83,18 @@ export function RequestDetails({ request }: RequestDetailsProps) {
           </div>
         )}
 
-        {activeTab === 'response' && (
+        {activeTab === 'response' && request.response.error && (
+          <div className="space-y-4">
+            <div>
+              <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
+                Error message
+              </h4>
+              <CodeBlock data={request.response.error} />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'response' && !request.response.error && (
           <div className="space-y-4">
             <div>
               <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">

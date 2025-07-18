@@ -27,7 +27,7 @@ export interface CubeRequest {
   id: string;
   url: string;
   query: Query;
-  response: LoadResponse<unknown>;
+  response: (LoadResponse<unknown> & { error?: undefined }) | { error: string };
   timestamp: number;
   duration?: number;
   status: number;
