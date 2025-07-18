@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import path from 'node:path';
 import { crx } from '@crxjs/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
@@ -23,5 +25,12 @@ export default defineConfig({
     cors: {
       origin: [/chrome-extension:\/\//],
     },
+  },
+
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.ts'],
+    include: ['tests/**/*.test.tsx', 'src/**/*.test.ts'],
   },
 });
