@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Settings } from '../../../types';
 
-interface SettingsPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
+export function SettingsPanel() {
   const [settings, setSettings] = useState<Settings>({
     domains: ['localhost:4000'],
     endpoints: ['/cubejs-api/v1/load'],
@@ -73,26 +68,9 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     }));
   };
 
-  if (!isOpen) {
-    return null;
-  }
-
   return (
-    <div className="border-gray-200 border-b bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-semibold text-gray-900 text-sm dark:text-gray-100">
-          Settings
-        </h3>
-        <button
-          className="text-gray-500 text-xs hover:text-gray-700 dark:hover:text-gray-300"
-          onClick={onClose}
-          type="button"
-        >
-          Close
-        </button>
-      </div>
-
-      <div className="max-h-96 space-y-4 overflow-auto">
+    <div className="flex-1 overflow-auto bg-white p-4 dark:bg-gray-800">
+      <div className="space-y-4">
         {/* Domains Section */}
         <div>
           <span className="mb-2 block font-medium text-gray-700 text-xs dark:text-gray-300">
