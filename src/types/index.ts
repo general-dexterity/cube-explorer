@@ -33,3 +33,10 @@ export interface CubeRequest {
   status: number;
   domain: string;
 }
+
+export const SidebarPanel = {
+  Requests: 'requests',
+  Settings: 'settings',
+} as const;
+
+export type SidebarPanel = (typeof SidebarPanel)[keyof typeof SidebarPanel];
