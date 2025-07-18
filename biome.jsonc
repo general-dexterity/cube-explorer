@@ -5,6 +5,7 @@
     "globals": ["chrome"]
   },
   "linter": {
+    "includes": ["**/*.ts", "!./.claude/*"],
     "rules": {
       "suspicious": {
         "noConsole": {
@@ -18,13 +19,5 @@
         "noUnknownAtRule": "off"
       }
     }
-  },
-  "overrides": [
-    {
-      "includes": ["./.claude/settings.local.json"],
-      "linter": {
-        "enabled": false
-      }
-    }
-  ]
+  }
 }
