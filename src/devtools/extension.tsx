@@ -4,7 +4,7 @@ import { EmptyState } from './components/empty-state';
 import { RequestDetails } from './components/RequestDetails/request-details';
 import { Sidebar } from './components/Sidebar/sidebar';
 
-export default function Extensions() {
+export default function Extension() {
   const [requests, setRequests] = useState<CubeRequest[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<CubeRequest | null>(
     null
@@ -98,7 +98,6 @@ export default function Extensions() {
         onRequestSelect={setSelectedRequest}
         requests={requests}
         selectedRequest={selectedRequest}
-        settings={settings}
       />
 
       {/* Main Content */}
