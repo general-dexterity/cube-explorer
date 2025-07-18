@@ -67,8 +67,7 @@ describe('Sidebar', () => {
 
     // Settings panel should be visible
     expect(screen.getByText('Settings')).toBeInTheDocument();
-    expect(screen.getByText('Domains to Monitor')).toBeInTheDocument();
-    expect(screen.getByText('API Endpoints')).toBeInTheDocument();
+    expect(screen.getByText('URLs to Monitor')).toBeInTheDocument();
   });
 
   it('returns to request list when back button is clicked from settings', () => {

@@ -88,7 +88,7 @@ export function RequestItem({
       {/* Cube name display */}
       {cubeNames.length > 0 && (
         <div className="mb-1 flex items-center gap-1 overflow-hidden">
-          <span className="truncate font-medium text-gray-900 text-sm dark:text-gray-100">
+          <span className="truncate font-medium font-mono text-gray-900 text-sm dark:text-gray-100">
             {cubeNames[0]}
           </span>
           {cubeNames.length > 1 && (

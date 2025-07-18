@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '@/constants';
 import Extension from '@/devtools/extension';
 
 describe('Settings Panel Navigation', () => {
@@ -15,11 +16,10 @@ describe('Settings Panel Navigation', () => {
       ) => void
     ).mockImplementation((_, cb) =>
       cb({
-        cubeExplorerSettings: {
-          domains: ['localhost:4000'],
-          endpoints: ['/cubejs-api/v1/load'],
-          jwtTokens: {},
+        [SETTINGS_STORAGE_KEY]: {
+          urls: ['http://localhost:4000/cubejs-api/v1'],
           autoCapture: true,
+          version: SETTINGS_VERSION,
         },
       })
     );
@@ -38,8 +38,7 @@ describe('Settings Panel Navigation', () => {
 
     // Settings panel should be visible
     expect(screen.getByText('Settings')).toBeInTheDocument();
-    expect(screen.getByText('Domains to Monitor')).toBeInTheDocument();
-    expect(screen.getByText('API Endpoints')).toBeInTheDocument();
+    expect(screen.getByText('URLs to Monitor')).toBeInTheDocument();
 
     // Requests header should not be visible
     expect(screen.queryByText('Requests')).not.toBeInTheDocument();

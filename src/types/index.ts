@@ -17,10 +17,9 @@ import type { LoadResponse, Query } from '@cubejs-client/core';
 
 // Extension-specific types
 export interface Settings {
-  domains: string[];
-  endpoints: string[];
-  jwtTokens: Record<string, string>;
+  urls: string[];
   autoCapture: boolean;
+  version: string;
 }
 
 export interface CubeRequest {

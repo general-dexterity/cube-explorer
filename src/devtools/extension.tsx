@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '../constants';
 import type { CubeQuery, CubeRequest, CubeResponse, Settings } from '../types';
 import { EmptyState } from './components/empty-state';
 import { RequestDetails } from './components/RequestDetails/request-details';
@@ -14,20 +15,19 @@ export default function Extension() {
 
   useEffect(() => {
     // Load settings with defaults
-    chrome.storage.sync.get(['cubeExplorerSettings'], (result) => {
+    chrome.storage.sync.get([SETTINGS_STORAGE_KEY], (result) => {
       const defaultSettings: Settings = {
-        domains: ['localhost:4000'],
-        endpoints: ['/cubejs-api/v1/load'],
-        jwtTokens: {},
+        urls: ['http://localhost:4000/cubejs-api/v1'],
         autoCapture: true,
+        version: SETTINGS_VERSION,
       };
-      setSettings(result.cubeExplorerSettings || defaultSettings);
+      setSettings(result[SETTINGS_STORAGE_KEY] || defaultSettings);
     });
 
     // Listen for settings changes
     chrome.storage.onChanged.addListener((changes) => {
-      if (changes.cubeExplorerSettings) {
-        setSettings(changes.cubeExplorerSettings.newValue);
+      if (changes[SETTINGS_STORAGE_KEY]) {
+        setSettings(changes[SETTINGS_STORAGE_KEY].newValue);
       }
     });
   }, []);
@@ -38,18 +38,24 @@ export default function Extension() {
     }
 
     const handleRequest = (request: chrome.devtools.network.Request) => {
-      const url = new URL(request.request.url);
-      const domain = `${url.hostname}:${url.port || (url.protocol === 'https:' ? '443' : '80')}`;
+      const requestUrl = request.request.url;
 
-      // Check if this request matches our filter criteria
-      const matchesDomain = settings.domains.some((d) => domain.includes(d));
-      const matchesEndpoint = settings.endpoints.some((e) =>
-        url.pathname.includes(e)
-      );
+      // Check if this request matches any of our monitored URLs
+      const matchesUrl = settings.urls.some((monitoredUrl) => {
+        try {
+          const monitored = new URL(monitoredUrl);
 
-      if (matchesDomain && matchesEndpoint) {
+          // Match if the request URL starts with the monitored URL
+          return requestUrl.startsWith(monitored.origin + monitored.pathname);
+        } catch {
+          return false;
+        }
+      });
+
+      if (matchesUrl) {
         request.getContent((content: string) => {
           try {
+            const url = new URL(request.request.url);
             const query = JSON.parse(
               request.request.postData?.text ||
                 url.searchParams.get('query') ||
@@ -58,6 +64,7 @@ export default function Extension() {
 
             const response = JSON.parse(content) as CubeResponse<unknown>;
 
+            const domain = `${url.hostname}:${url.port || (url.protocol === 'https:' ? '443' : '80')}`;
             const cubeRequest: CubeRequest = {
               id: `${Date.now()}-${Math.random()}`,
               url: request.request.url,

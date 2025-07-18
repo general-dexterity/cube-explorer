@@ -1,5 +1,6 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '@/constants';
 import Extension from '@/devtools/extension';
 import { createMock } from '../utils/mock';
 
@@ -10,10 +11,9 @@ describe('Extension with Requests', () => {
 
   it('renders a mocked request in the sidebar', async () => {
     const mockSettings = {
-      domains: ['localhost:4000'],
-      endpoints: ['/cubejs-api/v1/load'],
-      jwtTokens: {},
+      urls: ['http://localhost:4000/cubejs-api/v1'],
       autoCapture: true,
+      version: SETTINGS_VERSION,
     };
 
     vi.mocked(
@@ -21,12 +21,14 @@ describe('Extension with Requests', () => {
         keys: string[],
         callback: (items: Record<string, unknown>) => void
       ) => void
-    ).mockImplementation((_, cb) => cb({ cubeExplorerSettings: mockSettings }));
+    ).mockImplementation((_, cb) =>
+      cb({ [SETTINGS_STORAGE_KEY]: mockSettings })
+    );
 
     // Create a mock request
     const mockRequest = createMock<chrome.devtools.network.Request>({
       request: {
-        url: 'https://localhost:4000/cubejs-api/v1/load',
+        url: 'http://localhost:4000/cubejs-api/v1/load',
         postData: {
           text: JSON.stringify({
             measures: ['Orders.count'],
@@ -96,10 +98,9 @@ describe('Extension with Requests', () => {
 
   it('does not render requests that do not match the settings', async () => {
     const mockSettings = {
-      domains: ['api.example.com'],
-      endpoints: ['/api/analytics'],
-      jwtTokens: {},
+      urls: ['http://api.example.com/api/analytics'],
       autoCapture: true,
+      version: SETTINGS_VERSION,
     };
 
     // Mock chrome storage to return settings
@@ -108,12 +109,14 @@ describe('Extension with Requests', () => {
         keys: string[],
         callback: (items: Record<string, unknown>) => void
       ) => void
-    ).mockImplementation((_, cb) => cb({ cubeExplorerSettings: mockSettings }));
+    ).mockImplementation((_, cb) =>
+      cb({ [SETTINGS_STORAGE_KEY]: mockSettings })
+    );
 
     // Create a mock request that doesn't match settings
     const mockRequest = createMock<chrome.devtools.network.Request>({
       request: {
-        url: 'https://localhost:4000/cubejs-api/v1/load',
+        url: 'http://localhost:4000/cubejs-api/v1/load',
         postData: {
           text: JSON.stringify({
             measures: ['Orders.count'],
