@@ -49,7 +49,8 @@ export default defineConfig((env) => {
 
     server: {
       cors: {
-        origin: ['chrome-extension://'],
+        // biome-ignore lint/performance/useTopLevelRegex: it's fine
+        origin: [/chrome-extension:\/\//],
       },
     },
 
