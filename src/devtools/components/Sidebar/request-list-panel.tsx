@@ -35,7 +35,7 @@ export function RequestListPanel({
               type="text"
               value={filter}
             />
-            <MagnifyingGlassIcon className="absolute top-1.5 right-2 h-4 w-4 text-gray-400" />
+            <MagnifyingGlassIcon className="absolute top-1.5 right-2 h-4 w-4 text-gray-400 dark:text-gray-500" />
           </div>
           {filter && (
             <div className="mt-2 text-center text-gray-500 text-xs dark:text-gray-400">
@@ -47,7 +47,7 @@ export function RequestListPanel({
 
       <div className="flex-1 overflow-auto dark:bg-gray-800">
         {filteredRequests.length === 0 ? (
-          <div className="p-4 text-center text-gray-500 text-xs">
+          <div className="p-4 text-center text-gray-500 text-xs dark:text-gray-400">
             {requests.length === 0
               ? 'Listening for Cube Explorer requests...'
               : 'No requests match your filter'}

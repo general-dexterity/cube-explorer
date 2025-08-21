@@ -78,7 +78,7 @@ export function RequestItem({
             {request.status}
           </span>
           {request.duration && (
-            <span className="text-gray-500 text-xs">
+            <span className="text-gray-500 text-xs dark:text-gray-400">
               {Math.round(request.duration)}ms
             </span>
           )}
@@ -87,13 +87,20 @@ export function RequestItem({
 
       {/* Cube name display */}
       {cubeNames.length > 0 && (
-        <div className="mb-1 flex items-center gap-1 overflow-hidden">
+        <div className="mb-1 flex items-center gap-1 overflow-hidden justify-between">
           <span className="truncate font-medium font-mono text-gray-900 text-sm dark:text-gray-100">
             {cubeNames[0]}
           </span>
           {cubeNames.length > 1 && (
             <span className="flex-shrink-0 rounded bg-gray-200 px-1.5 py-0.5 font-medium text-gray-600 text-xs dark:bg-gray-700 dark:text-gray-300">
               +{cubeNames.length - 1}
+            </span>
+          )}
+
+          {/* Show polling indicator for continue wait responses */}
+          {request.response?.error === 'Continue wait' && (
+            <span className="rounded bg-orange-100 px-1.5 py-0.5 font-medium text-orange-800 text-xs dark:bg-orange-900 dark:text-orange-200">
+              polling
             </span>
           )}
         </div>
