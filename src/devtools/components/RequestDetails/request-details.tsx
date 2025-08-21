@@ -1,8 +1,7 @@
+import { PushPinIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { CubeRequest } from '../../../types';
-import { FilterSection } from '../Filters/filter-section';
-import { CodeBlock } from './code-block';
-import { QuerySection } from './query-section';
+import { HeadersTab, QueryTab, ResponseTab } from './tabs';
 
 interface RequestDetailsProps {
   request: CubeRequest;
@@ -27,6 +26,9 @@ export function RequestDetails({ request }: RequestDetailsProps) {
               <span>• {Math.round(request.duration)}ms</span>
             )}
             <span>• {request.status}</span>
+            <button>
+              <PushPinIcon className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300" />
+            </button>
           </div>
         </div>
       </div>
@@ -50,89 +52,9 @@ export function RequestDetails({ request }: RequestDetailsProps) {
 
       {/* Tab Content */}
       <div className="flex-1 overflow-auto p-4 dark:bg-gray-900">
-        {activeTab === 'query' && (
-          <div className="space-y-4">
-            <QuerySection
-              color="blue"
-              items={request.query.measures}
-              title="Measures"
-            />
-            <QuerySection
-              color="green"
-              items={request.query.dimensions}
-              title="Dimensions"
-            />
-            {request.query.filters && request.query.filters.length > 0 && (
-              <FilterSection filters={request.query.filters} />
-            )}
-            {request.query.timeDimensions &&
-              request.query.timeDimensions.length > 0 && (
-                <div>
-                  <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                    Time Dimensions
-                  </h4>
-                  <CodeBlock data={request.query.timeDimensions} />
-                </div>
-              )}
-            <div>
-              <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                Full Query
-              </h4>
-              <CodeBlock data={request.query} />
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'response' && request.response?.error && (
-          <div className="space-y-4">
-            <div>
-              <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                Error message
-              </h4>
-              <CodeBlock data={request.response.error} />
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'response' && request.response.error === undefined && (
-          <div className="space-y-4">
-            <div>
-              <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                Data
-              </h4>
-              <CodeBlock data={request.response?.results?.[0]?.data} />
-            </div>
-            {!!request.response?.results?.[0].annotation && (
-              <div>
-                <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                  Annotation
-                </h4>
-                <CodeBlock data={request.response?.results?.[0].annotation} />
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'headers' && (
-          <div className="space-y-4">
-            <div>
-              <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                Request URL
-              </h4>
-              <div className="break-all rounded border bg-gray-100 p-2 font-mono text-xs dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
-                {request.url}
-              </div>
-            </div>
-            <div>
-              <h4 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-                Domain
-              </h4>
-              <div className="rounded border bg-gray-100 p-2 font-mono text-xs dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
-                {request.domain}
-              </div>
-            </div>
-          </div>
-        )}
+        {activeTab === 'query' && <QueryTab request={request} />}
+        {activeTab === 'response' && <ResponseTab request={request} />}
+        {activeTab === 'headers' && <HeadersTab request={request} />}
       </div>
     </div>
   );
