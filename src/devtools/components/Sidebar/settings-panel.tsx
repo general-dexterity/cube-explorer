@@ -7,6 +7,7 @@ export function SettingsPanel() {
     urls: ['http://localhost:4000/cubejs-api/v1'],
     autoCapture: true,
     version: SETTINGS_VERSION,
+    pinnedRequests: [],
   });
   const [saved, setSaved] = useState(false);
 

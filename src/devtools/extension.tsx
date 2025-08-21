@@ -15,13 +15,30 @@ export default function Extension() {
 
   useEffect(() => {
     // Load settings with defaults
-    chrome.storage.sync.get([SETTINGS_STORAGE_KEY], (result) => {
+    chrome.storage.sync.get([SETTINGS_STORAGE_KEY], async (result) => {
+      const isDev = import.meta.env.MODE === 'development';
+
+      let devTestRequest = null;
+      if (isDev) {
+        const { DEV_TEST_REQUEST } = await import('./mock/dev-test-request');
+        devTestRequest = DEV_TEST_REQUEST;
+      }
+
       const defaultSettings: Settings = {
         urls: ['http://localhost:4000/cubejs-api/v1'],
         autoCapture: true,
         version: SETTINGS_VERSION,
+        pinnedRequests: devTestRequest ? [devTestRequest] : [],
       };
-      setSettings(result[SETTINGS_STORAGE_KEY] || defaultSettings);
+
+      // TODO: Migrations
+      const settings = {
+        ...defaultSettings,
+        ...result[SETTINGS_STORAGE_KEY],
+      };
+
+      setSettings(settings);
+      setRequests(settings.pinnedRequests || []);
     });
 
     // Listen for settings changes
@@ -42,14 +59,9 @@ export default function Extension() {
 
       // Check if this request matches any of our monitored URLs
       const matchesUrl = settings.urls.some((monitoredUrl) => {
-        try {
-          const monitored = new URL(monitoredUrl);
-
-          // Match if the request URL starts with the monitored URL
-          return requestUrl.startsWith(monitored.origin + monitored.pathname);
-        } catch {
-          return false;
-        }
+        return (
+          requestUrl.startsWith(monitoredUrl) && request.response.status === 200
+        );
       });
 
       if (matchesUrl) {
