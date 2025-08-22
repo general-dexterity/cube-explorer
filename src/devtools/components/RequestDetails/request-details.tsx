@@ -5,9 +5,15 @@ import { HeadersTab, QueryTab, ResponseTab } from './tabs';
 
 interface RequestDetailsProps {
   request: CubeRequest;
+  isPinned: boolean;
+  onTogglePin: (request: CubeRequest) => void;
 }
 
-export function RequestDetails({ request }: RequestDetailsProps) {
+export function RequestDetails({
+  request,
+  isPinned,
+  onTogglePin,
+}: RequestDetailsProps) {
   const [activeTab, setActiveTab] = useState<'query' | 'response' | 'headers'>(
     'query'
   );
@@ -17,18 +23,27 @@ export function RequestDetails({ request }: RequestDetailsProps) {
       {/* Header */}
       <div className="border-gray-200 border-b bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-gray-900 text-sm dark:text-gray-100">
-            Request Details
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-gray-900 text-sm dark:text-gray-100">
+              Request Details
+            </h3>
+            <button
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              onClick={() => onTogglePin(request)}
+              title={isPinned ? 'Unpin request' : 'Pin request'}
+            >
+              <PushPinIcon
+                className="h-4 w-4"
+                weight={isPinned ? 'fill' : 'regular'}
+              />
+            </button>
+          </div>
           <div className="flex items-center gap-2 text-gray-500 text-xs dark:text-gray-400">
             <span>{new Date(request.timestamp).toLocaleString()}</span>
             {request.duration && (
               <span>• {Math.round(request.duration)}ms</span>
             )}
             <span>• {request.status}</span>
-            <button>
-              <PushPinIcon className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300" />
-            </button>
           </div>
         </div>
       </div>

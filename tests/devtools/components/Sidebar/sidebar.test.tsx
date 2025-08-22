@@ -47,6 +47,7 @@ const createMockRequest = (
 describe('Sidebar', () => {
   const defaultProps = {
     requests: [],
+    pinned: [],
     selectedRequest: null,
     filter: '',
     onFilterChange: vi.fn(),

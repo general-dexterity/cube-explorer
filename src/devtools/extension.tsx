@@ -1,5 +1,9 @@
-import { useEffect, useState } from 'react';
-import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '../constants';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  PINNED_REQUESTS_STORAGE_KEY,
+  SETTINGS_STORAGE_KEY,
+  SETTINGS_VERSION,
+} from '../constants';
 import type { CubeQuery, CubeRequest, CubeResponse, Settings } from '../types';
 import { EmptyState } from './components/empty-state';
 import { RequestDetails } from './components/RequestDetails/request-details';
@@ -12,23 +16,15 @@ export default function Extension() {
   );
   const [settings, setSettings] = useState<Settings | null>(null);
   const [filter, setFilter] = useState('');
+  const [pinned, setPinned] = useState<CubeRequest[]>([]);
 
   useEffect(() => {
     // Load settings with defaults
     chrome.storage.sync.get([SETTINGS_STORAGE_KEY], async (result) => {
-      const isDev = import.meta.env.MODE === 'development';
-
-      let devTestRequest = null;
-      if (isDev) {
-        const { DEV_TEST_REQUEST } = await import('./mock/dev-test-request');
-        devTestRequest = DEV_TEST_REQUEST;
-      }
-
       const defaultSettings: Settings = {
         urls: ['http://localhost:4000/cubejs-api/v1'],
         autoCapture: true,
         version: SETTINGS_VERSION,
-        pinnedRequests: devTestRequest ? [devTestRequest] : [],
       };
 
       // TODO: Migrations
@@ -38,13 +34,20 @@ export default function Extension() {
       };
 
       setSettings(settings);
-      setRequests(settings.pinnedRequests || []);
     });
 
-    // Listen for settings changes
+    // Load pinned requests
+    chrome.storage.sync.get([PINNED_REQUESTS_STORAGE_KEY], (result) => {
+      setPinned(result[PINNED_REQUESTS_STORAGE_KEY] || []);
+    });
+
+    // Listen for storage changes
     chrome.storage.onChanged.addListener((changes) => {
       if (changes[SETTINGS_STORAGE_KEY]) {
         setSettings(changes[SETTINGS_STORAGE_KEY].newValue);
+      }
+      if (changes[PINNED_REQUESTS_STORAGE_KEY]) {
+        setPinned(changes[PINNED_REQUESTS_STORAGE_KEY].newValue || []);
       }
     });
   }, []);
@@ -103,6 +106,29 @@ export default function Extension() {
     };
   }, [settings]);
 
+  const savePinned = useCallback((next: CubeRequest[]) => {
+    setPinned(next);
+    chrome.storage.sync.set({ [PINNED_REQUESTS_STORAGE_KEY]: next });
+  }, []);
+
+  const togglePin = useCallback(
+    (req: CubeRequest) => {
+      const exists = pinned.some((r) => r.id === req.id);
+      if (exists) {
+        savePinned(pinned.filter((r) => r.id !== req.id));
+      } else {
+        savePinned([req, ...pinned]);
+      }
+    },
+    [pinned, savePinned]
+  );
+
+  // Combine requests with pinned first, no duplicates
+  const sidebarRequests = [
+    ...pinned,
+    ...requests.filter((r) => !pinned.some((p) => p.id === r.id)),
+  ];
+
   const clearRequests = () => {
     setRequests([]);
     setSelectedRequest(null);
@@ -115,14 +141,19 @@ export default function Extension() {
         onClearRequests={clearRequests}
         onFilterChange={setFilter}
         onRequestSelect={setSelectedRequest}
-        requests={requests}
+        pinned={pinned}
+        requests={sidebarRequests}
         selectedRequest={selectedRequest}
       />
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {selectedRequest ? (
-          <RequestDetails request={selectedRequest} />
+          <RequestDetails
+            isPinned={pinned.some((r) => r.id === selectedRequest.id)}
+            onTogglePin={togglePin}
+            request={selectedRequest}
+          />
         ) : (
           <EmptyState />
         )}

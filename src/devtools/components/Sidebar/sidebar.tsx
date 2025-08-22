@@ -11,6 +11,7 @@ import { SettingsPanel } from './settings-panel';
 
 interface SidebarProps {
   requests: CubeRequest[];
+  pinned: CubeRequest[];
   selectedRequest: CubeRequest | null;
   filter: string;
   onFilterChange: (filter: string) => void;
@@ -20,6 +21,7 @@ interface SidebarProps {
 
 export function Sidebar({
   requests,
+  pinned,
   selectedRequest,
   filter,
   onFilterChange,
@@ -94,6 +96,7 @@ export function Sidebar({
           filter={filter}
           onFilterChange={onFilterChange}
           onRequestSelect={onRequestSelect}
+          pinned={pinned}
           requests={requests}
           selectedRequest={selectedRequest}
           showSearch={showSearch}

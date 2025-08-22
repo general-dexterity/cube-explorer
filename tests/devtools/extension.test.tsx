@@ -1,6 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '@/constants';
+import {
+  PINNED_REQUESTS_STORAGE_KEY,
+  SETTINGS_STORAGE_KEY,
+  SETTINGS_VERSION,
+} from '@/constants';
 import Extension from '@/devtools/extension';
 
 describe('Extension', () => {
@@ -14,11 +18,22 @@ describe('Extension', () => {
   });
 
   it('renders the extension component with header and empty state', async () => {
-    // Mock chrome storage to return default settings
+    // Mock chrome storage to return default settings and empty pinned requests
     // @ts-expect-error - Mock implementation for testing
     vi.mocked(chrome.storage.sync.get).mockImplementation(
-      (_keys, callback: (items: Record<string, unknown>) => void) => {
-        callback({ [SETTINGS_STORAGE_KEY]: null });
+      (keys, callback: (items: Record<string, unknown>) => void) => {
+        if (Array.isArray(keys)) {
+          const result: Record<string, unknown> = {};
+          if (keys.includes(SETTINGS_STORAGE_KEY)) {
+            result[SETTINGS_STORAGE_KEY] = null;
+          }
+          if (keys.includes(PINNED_REQUESTS_STORAGE_KEY)) {
+            result[PINNED_REQUESTS_STORAGE_KEY] = [];
+          }
+          callback(result);
+        } else {
+          callback({ [keys as string]: null });
+        }
       }
     );
 
@@ -57,6 +72,10 @@ describe('Extension', () => {
         [SETTINGS_STORAGE_KEY],
         expect.any(Function)
       );
+      expect(chrome.storage.sync.get).toHaveBeenCalledWith(
+        [PINNED_REQUESTS_STORAGE_KEY],
+        expect.any(Function)
+      );
     });
   });
 
@@ -86,8 +105,19 @@ describe('Extension', () => {
   it('uses default settings when none are stored', async () => {
     // @ts-expect-error - Mock implementation for testing
     vi.mocked(chrome.storage.sync.get).mockImplementation(
-      (_keys, callback: (items: Record<string, unknown>) => void) => {
-        callback({ [SETTINGS_STORAGE_KEY]: null });
+      (keys, callback: (items: Record<string, unknown>) => void) => {
+        if (Array.isArray(keys)) {
+          const result: Record<string, unknown> = {};
+          if (keys.includes(SETTINGS_STORAGE_KEY)) {
+            result[SETTINGS_STORAGE_KEY] = null;
+          }
+          if (keys.includes(PINNED_REQUESTS_STORAGE_KEY)) {
+            result[PINNED_REQUESTS_STORAGE_KEY] = [];
+          }
+          callback(result);
+        } else {
+          callback({ [keys as string]: null });
+        }
       }
     );
 
@@ -97,6 +127,50 @@ describe('Extension', () => {
       expect(
         chrome.devtools.network.onRequestFinished.addListener
       ).toHaveBeenCalled();
+    });
+  });
+
+  it('loads pinned requests from storage on mount', async () => {
+    const mockPinnedRequests = [
+      {
+        id: 'pinned-1',
+        url: 'http://localhost:4000/cubejs-api/v1/load',
+        query: { measures: ['Users.count'] },
+        response: { data: [] },
+        timestamp: Date.now(),
+        duration: 100,
+        status: 200,
+        domain: 'localhost:4000',
+      },
+    ];
+
+    // @ts-expect-error - Mock implementation for testing
+    vi.mocked(chrome.storage.sync.get).mockImplementation(
+      (keys, callback: (items: Record<string, unknown>) => void) => {
+        if (Array.isArray(keys)) {
+          const result: Record<string, unknown> = {};
+          if (keys.includes(SETTINGS_STORAGE_KEY)) {
+            result[SETTINGS_STORAGE_KEY] = {
+              urls: ['http://localhost:4000/cubejs-api/v1'],
+              autoCapture: true,
+              version: SETTINGS_VERSION,
+            };
+          }
+          if (keys.includes(PINNED_REQUESTS_STORAGE_KEY)) {
+            result[PINNED_REQUESTS_STORAGE_KEY] = mockPinnedRequests;
+          }
+          callback(result);
+        }
+      }
+    );
+
+    render(<Extension />);
+
+    await waitFor(() => {
+      expect(chrome.storage.sync.get).toHaveBeenCalledWith(
+        [PINNED_REQUESTS_STORAGE_KEY],
+        expect.any(Function)
+      );
     });
   });
 });

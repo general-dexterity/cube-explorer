@@ -1,7 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '@/constants';
+import {
+  PINNED_REQUESTS_STORAGE_KEY,
+  SETTINGS_STORAGE_KEY,
+  SETTINGS_VERSION,
+} from '@/constants';
 import Extension from '@/devtools/extension';
 
 describe('Settings Panel Navigation', () => {
@@ -11,18 +15,33 @@ describe('Settings Panel Navigation', () => {
     // Mock chrome storage to return default settings
     vi.mocked(
       chrome.storage.sync.get as (
-        keys: string[],
+        keys: string | string[],
         callback: (items: Record<string, unknown>) => void
       ) => void
-    ).mockImplementation((_, cb) =>
-      cb({
-        [SETTINGS_STORAGE_KEY]: {
-          urls: ['http://localhost:4000/cubejs-api/v1'],
-          autoCapture: true,
-          version: SETTINGS_VERSION,
-        },
-      })
-    );
+    ).mockImplementation((keys, cb) => {
+      if (Array.isArray(keys)) {
+        const result: Record<string, unknown> = {};
+        if (keys.includes(SETTINGS_STORAGE_KEY)) {
+          result[SETTINGS_STORAGE_KEY] = {
+            urls: ['http://localhost:4000/cubejs-api/v1'],
+            autoCapture: true,
+            version: SETTINGS_VERSION,
+          };
+        }
+        if (keys.includes(PINNED_REQUESTS_STORAGE_KEY)) {
+          result[PINNED_REQUESTS_STORAGE_KEY] = [];
+        }
+        cb(result);
+      } else {
+        cb({
+          [keys]: {
+            urls: ['http://localhost:4000/cubejs-api/v1'],
+            autoCapture: true,
+            version: SETTINGS_VERSION,
+          },
+        });
+      }
+    });
   });
 
   it('clicking on the settings displays the settings panel', async () => {

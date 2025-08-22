@@ -47,7 +47,6 @@ export interface Settings {
   urls: string[];
   autoCapture: boolean;
   version: string;
-  pinnedRequests: CubeRequest[];
 }
 
 export interface CubeRequest {

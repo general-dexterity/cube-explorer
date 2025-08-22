@@ -1,8 +1,10 @@
+import { PushPinIcon } from '@phosphor-icons/react';
 import type { CubeRequest } from '../../../types';
 
 interface RequestItemProps {
   request: CubeRequest;
   isSelected: boolean;
+  isPinned?: boolean;
   onClick: () => void;
 }
 
@@ -35,6 +37,7 @@ function RequestTag({
 export function RequestItem({
   request,
   isSelected,
+  isPinned,
   onClick,
 }: RequestItemProps) {
   // Extract cube names from measures and dimensions
@@ -66,9 +69,17 @@ export function RequestItem({
       type="button"
     >
       <div className="mb-1 flex items-center justify-between">
-        <span className="font-medium text-gray-900 text-xs dark:text-gray-100">
-          {new Date(request.timestamp).toLocaleTimeString()}
-        </span>
+        <div className="flex items-center gap-1">
+          <span className="font-medium text-gray-900 text-xs dark:text-gray-100">
+            {new Date(request.timestamp).toLocaleTimeString()}
+          </span>
+          {isPinned && (
+            <PushPinIcon
+              className="h-3 w-3 text-blue-600 dark:text-blue-400"
+              weight="fill"
+            />
+          )}
+        </div>
         <div className="flex items-center gap-2">
           <span
             className="font-mono text-xs data-error:text-red-600 data-success:text-green-600"

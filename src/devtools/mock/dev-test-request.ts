@@ -1,5 +1,12 @@
 import type { CubeRequest } from '../../types';
 
+export const WAITING_REQUEST = {
+  response: {
+    error: 'Continue wait',
+    requestId: 'ae194206-150a-4aec-8a94-ee5387e36cc8-span-12',
+  },
+} as unknown as CubeRequest;
+
 export const DEV_TEST_REQUEST = {
   domain: 'localhost:4000',
   id: '15c618f8-2a29-448b-a00d-bf468cc0096c',

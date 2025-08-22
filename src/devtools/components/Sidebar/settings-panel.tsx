@@ -1,3 +1,4 @@
+import { Field } from '@ark-ui/react';
 import { useEffect, useState } from 'react';
 import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '../../../constants';
 import type { Settings } from '../../../types';
@@ -7,7 +8,6 @@ export function SettingsPanel() {
     urls: ['http://localhost:4000/cubejs-api/v1'],
     autoCapture: true,
     version: SETTINGS_VERSION,
-    pinnedRequests: [],
   });
   const [saved, setSaved] = useState(false);
 
@@ -63,17 +63,19 @@ export function SettingsPanel() {
           <div className="space-y-1">
             {settings.urls.map((url, index) => {
               const isDefaultUrl =
-                url === 'http://localhost:4000/cubejs-api/v1';
+                url === 'http://localhost:4000/cubejs-api/v1' && index === 0;
               return (
                 <div className="flex gap-1" key={index}>
-                  <input
-                    className="flex-1 rounded border border-gray-300 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-                    disabled={isDefaultUrl}
-                    onChange={(e) => updateUrl(index, e.target.value)}
-                    placeholder="http://localhost:4000/cubejs-api/v1"
-                    type="text"
-                    value={url}
-                  />
+                  <Field.Root className="flex-1 flex">
+                    <Field.Input
+                      className="flex-1 rounded border border-gray-300 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      defaultValue={url}
+                      disabled={isDefaultUrl}
+                      onChange={(e) => updateUrl(index, e.target.value)}
+                      placeholder="http://localhost:4000/cubejs-api/v1"
+                    />
+                    <Field.ErrorText>Error Info</Field.ErrorText>
+                  </Field.Root>
                   {!isDefaultUrl && (
                     <button
                       className="px-2 py-1 text-red-600 text-xs hover:text-red-800"
