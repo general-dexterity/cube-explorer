@@ -1,5 +1,6 @@
+import { Collapsible } from '@ark-ui/react/collapsible';
 import { CaretDownIcon, PushPinIcon } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { cn } from '@/devtools/utils/styles';
 import type { CubeRequest } from '../../../types';
 import { RequestItem } from './request-item';
 
@@ -16,27 +17,24 @@ export function PinnedRequestsSection({
   filter,
   onRequestSelect,
 }: PinnedRequestsSectionProps) {
-  const [collapsed, setCollapsed] = useState(false);
-
   const filteredPinned = pinnedRequests.filter((req) =>
     JSON.stringify(req.query).toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
-    <div>
-      <button
-        className="flex w-full items-center justify-between px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-        onClick={() => setCollapsed(!collapsed)}
-        type="button"
+    <Collapsible.Root defaultOpen={true} unmountOnExit={true}>
+      <div
+        className={cn([
+          'data-[state=open]:mb-4',
+          'data-[state=open]:border-b data-[state=open]:border-gray-100 data-[state=open]:dark:border-gray-700',
+        ])}
       >
-        <span>Pinned ({filteredPinned.length})</span>
-        <CaretDownIcon
-          className={`h-3 w-3 transition-transform ${collapsed ? 'rotate-180' : ''}`}
-        />
-      </button>
+        <Collapsible.Trigger className="flex w-full items-center justify-between px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+          <span>Pinned ({filteredPinned.length})</span>
+          <CaretDownIcon className="h-3 w-3 transition-transform duration-200 data-[state=open]:rotate-180" />
+        </Collapsible.Trigger>
 
-      {!collapsed && (
-        <div>
+        <Collapsible.Content>
           {filteredPinned.length === 0 ? (
             <div className="px-4 py-3 text-center text-gray-500 text-xs dark:text-gray-400">
               <div className="mb-2">
@@ -59,8 +57,8 @@ export function PinnedRequestsSection({
               />
             ))
           )}
-        </div>
-      )}
-    </div>
+        </Collapsible.Content>
+      </div>
+    </Collapsible.Root>
   );
 }

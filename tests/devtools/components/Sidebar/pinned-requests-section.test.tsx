@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PinnedRequestsSection } from '@/devtools/components/Sidebar/pinned-requests-section';
 import type { CubeRequest, CubeResponse } from '@/types';
@@ -137,7 +137,7 @@ describe('PinnedRequestsSection', () => {
     expect(props.onRequestSelect).toHaveBeenCalledWith(mockRequest);
   });
 
-  it('can be collapsed and expanded', () => {
+  it('can be collapsed and expanded', async () => {
     const mockRequest = createMockRequest();
     const props = {
       ...defaultProps,
@@ -146,21 +146,27 @@ describe('PinnedRequestsSection', () => {
 
     render(<PinnedRequestsSection {...props} />);
 
-    // Initially expanded, should see the request
+    // Initially expanded (defaultOpen={true}), should see the request
     expect(screen.getByText('Orders')).toBeInTheDocument();
 
-    // Click to collapse
+    // Find the trigger button
     const collapseButton = screen.getByText('Pinned (1)');
+
+    // Click to collapse
     fireEvent.click(collapseButton);
 
-    // Should be collapsed, request should not be visible
-    expect(screen.queryByText('Orders')).not.toBeInTheDocument();
+    // Wait for the collapse animation and check if content is removed from DOM
+    await waitFor(() => {
+      expect(screen.queryByText('Orders')).not.toBeInTheDocument();
+    });
 
     // Click to expand again
     fireEvent.click(collapseButton);
 
-    // Should be expanded, request should be visible
-    expect(screen.getByText('Orders')).toBeInTheDocument();
+    // Wait for the expand animation and check if content is back in DOM
+    await waitFor(() => {
+      expect(screen.getByText('Orders')).toBeInTheDocument();
+    });
   });
 
   it('shows filtered empty state when filter excludes all pinned requests', () => {
