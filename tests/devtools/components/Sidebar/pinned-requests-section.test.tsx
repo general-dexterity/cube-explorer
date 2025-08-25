@@ -144,29 +144,42 @@ describe('PinnedRequestsSection', () => {
       pinnedRequests: [mockRequest],
     };
 
-    render(<PinnedRequestsSection {...props} />);
-
-    // Initially expanded (defaultOpen={true}), should see the request
-    expect(screen.getByText('Orders')).toBeInTheDocument();
+    const { container } = render(<PinnedRequestsSection {...props} />);
 
     // Find the trigger button
     const collapseButton = screen.getByText('Pinned (1)');
 
-    // Click to collapse
+    // Initially collapsed (defaultOpen={false})
+    // Check that the collapsible root has closed state
+    const collapsibleRoot = container.querySelector(
+      '[data-scope="collapsible"]'
+    );
+    expect(collapsibleRoot).toHaveAttribute('data-state', 'closed');
+
+    // Click to expand
     fireEvent.click(collapseButton);
 
-    // Wait for the collapse animation and check if content is removed from DOM
+    // Wait for the state to change to open and content to appear
     await waitFor(() => {
-      expect(screen.queryByText('Orders')).not.toBeInTheDocument();
-    });
-
-    // Click to expand again
-    fireEvent.click(collapseButton);
-
-    // Wait for the expand animation and check if content is back in DOM
-    await waitFor(() => {
+      expect(collapsibleRoot).toHaveAttribute('data-state', 'open');
       expect(screen.getByText('Orders')).toBeInTheDocument();
     });
+
+    // Click to collapse again
+    fireEvent.click(collapseButton);
+
+    // Wait for the state to change to closed
+    await waitFor(() => {
+      expect(collapsibleRoot).toHaveAttribute('data-state', 'closed');
+    });
+
+    // After collapse animation, content should be unmounted
+    await waitFor(
+      () => {
+        expect(screen.queryByText('Orders')).not.toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
   });
 
   it('shows filtered empty state when filter excludes all pinned requests', () => {
