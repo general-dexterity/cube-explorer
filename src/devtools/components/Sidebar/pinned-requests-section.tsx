@@ -22,19 +22,19 @@ export function PinnedRequestsSection({
   );
 
   return (
-    <Collapsible.Root defaultOpen={true} unmountOnExit={true}>
+    <Collapsible.Root defaultOpen={false} unmountOnExit={true}>
       <div
         className={cn([
           'data-[state=open]:mb-4',
           'data-[state=open]:border-b data-[state=open]:border-gray-100 data-[state=open]:dark:border-gray-700',
         ])}
       >
-        <Collapsible.Trigger className="flex w-full items-center justify-between px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+        <Collapsible.Trigger className="flex w-full items-center justify-between px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 group">
           <span>Pinned ({filteredPinned.length})</span>
-          <CaretDownIcon className="h-3 w-3 transition-transform duration-200 data-[state=open]:rotate-180" />
+          <CaretDownIcon className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </Collapsible.Trigger>
 
-        <Collapsible.Content>
+        <Collapsible.Content className="data-[state=open]:animate-expand data-[state=closed]:animate-collapse">
           {filteredPinned.length === 0 ? (
             <div className="px-4 py-3 text-center text-gray-500 text-xs dark:text-gray-400">
               <div className="mb-2">

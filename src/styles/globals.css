@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+@theme {
+  @keyframes expand {
+    from {
+      opacity: 0;
+      height: 0;
+    }
+    to {
+      opacity: 1;
+      height: var(--height);
+    }
+  }
+
+  --animate-expand: expand 110ms ease-in-out;
+
+  @keyframes collapse {
+    from {
+      opacity: 1;
+      height: var(--height);
+    }
+    to {
+      opacity: 0;
+      height: 0;
+    }
+  }
+
+  --animate-collapse: collapse 110ms ease-in-out;
+}
+
+@theme {
+  @keyframes accordion-down {
+    from {
+      opacity: 0;
+      height: 0;
+    }
+    to {
+      opacity: 1;
+      height: var(--height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      opacity: 1;
+      height: var(--height);
+    }
+    to {
+      opacity: 0;
+      height: 0;
+    }
+  }
+
+  --animate-accordion-down: accordion-down 200ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-out;
+}
+
