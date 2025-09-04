@@ -39,7 +39,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^26.1.0",
     "typescript": "~5.7.2",
-    "ultracite": "5.0.36",
+    "ultracite": "5.3.3",
     "vite": "^6.2.0",
     "vite-plugin-zip-pack": "^1.2.4",
     "vitest": "^3.2.4"
