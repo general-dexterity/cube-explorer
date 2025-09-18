@@ -2,8 +2,8 @@
 
 ## Commands
 - **Build**: `pnpm build` (runs TypeScript compilation + Vite build)
-- **Lint**: `pnpm lint` (uses ultracite, don't call biome directly)
-- **Format**: `pnpm format` (uses ultracite, don't call biome directly)
+- **Lint**: `pnpm lint` (uses ultracite, **NEVER** call `biome` directly)
+- **Format**: `pnpm format` (uses ultracite, **NEVER** call `biome` directly)
 - **Typecheck**: `pnpm typecheck`
 - **Test**: `pnpm test` (vitest run) or `pnpm test:watch` (vitest watch)
 - **Single test**: Add pattern after test command, e.g., `pnpm test component-name`
@@ -34,10 +34,12 @@
   - Use Ark-UI's built-in state management and data attributes
 
 - **Phosphor Icons**:
+  - **ALL icons MUST be from Phosphor Icons** - never manually create SVG icons or use other icon libraries
   - Import **outline** variant by default: `import { CaretDownIcon } from '@phosphor-icons/react'`
   - Use non-deprecated icon names (e.g., `CaretDownIcon`, not `CaretDown`)
   - Size icons via Tailwind `w-* h-*` classes, not via `size` prop
   - Icons inherit text color automatically; avoid setting `fill`/`stroke` inline
+  - If a specific icon doesn't exist in Phosphor, find the closest equivalent rather than creating custom SVGs
 
 - **Color and Theming**:
   - Use Tailwind semantic color tokens with dark mode variants: `text-gray-900 dark:text-gray-100`
