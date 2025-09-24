@@ -1,8 +1,8 @@
 import { Field } from '@ark-ui/react';
 import { useEffect, useState } from 'react';
+import { version } from '../../../../package.json';
 import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '../../../constants';
 import type { Settings } from '../../../types';
-import { version } from '../../../../package.json';
 
 export function SettingsPanel() {
   const [settings, setSettings] = useState<Settings>({
