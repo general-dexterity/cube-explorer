@@ -1,5 +1,6 @@
 import { PushPinIcon } from '@phosphor-icons/react';
 import type { CubeRequest } from '../../../types';
+import { cn } from '../../utils/styles';
 
 interface RequestItemProps {
   request: CubeRequest;
@@ -26,7 +27,10 @@ function RequestTag({
 
   return (
     <span
-      className={`inline-flex flex-shrink-0 items-center rounded px-1.5 py-0.5 font-medium text-xs ${colorClasses[color]}`}
+      className={cn(
+        'inline-flex flex-shrink-0 items-center rounded px-1.5 py-0.5 font-medium text-xs',
+        colorClasses[color],
+      )}
     >
       {count} {type}
       {count !== 1 ? 's' : ''}

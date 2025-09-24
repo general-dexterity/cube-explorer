@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import type { QueryAnnotations } from '../../../types';
+import { cn } from '../../utils/styles';
 
 interface DataTableProps {
   data: Array<Record<string, unknown>>;
@@ -102,11 +103,12 @@ export function DataTable({
               >
                 {headerGroup.headers.map((header, colIndex) => (
                   <th
-                    className={`px-3 py-1.5 text-left font-medium text-xs ${
+                    className={cn(
+                      'px-3 py-1.5 text-left font-medium text-xs',
                       colIndex % 2 === 0
                         ? 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-300'
-                        : 'bg-white text-gray-700 dark:bg-gray-950 dark:text-gray-300'
-                    }`}
+                        : 'bg-white text-gray-700 dark:bg-gray-950 dark:text-gray-300',
+                    )}
                     key={header.id}
                   >
                     {header.isPlaceholder
@@ -128,11 +130,12 @@ export function DataTable({
               >
                 {row.getVisibleCells().map((cell, colIndex) => (
                   <td
-                    className={`px-3 py-1.5 text-xs ${
+                    className={cn(
+                      'px-3 py-1.5 text-xs',
                       colIndex % 2 === 0
                         ? 'bg-gray-50 text-gray-900 dark:bg-gray-900/40 dark:text-gray-100'
-                        : 'bg-white text-gray-900 dark:bg-transparent dark:text-gray-100'
-                    }`}
+                        : 'bg-white text-gray-900 dark:bg-transparent dark:text-gray-100',
+                    )}
                     key={cell.id}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
