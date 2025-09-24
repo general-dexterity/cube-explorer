@@ -8,6 +8,7 @@ import type { CubeQuery, CubeRequest, CubeResponse, Settings } from '../types';
 import { EmptyState } from './components/empty-state';
 import { RequestDetails } from './components/RequestDetails/request-details';
 import { Sidebar } from './components/Sidebar/sidebar';
+import { parseCubeQueryFromRequest } from './utils/parse-cube-query';
 
 export default function Extension() {
   const [requests, setRequests] = useState<CubeRequest[]>([]);
@@ -71,11 +72,7 @@ export default function Extension() {
         request.getContent((content: string) => {
           try {
             const url = new URL(request.request.url);
-            const query = JSON.parse(
-              request.request.postData?.text ||
-                url.searchParams.get('query') ||
-                '{}',
-            ) as CubeQuery;
+            const query: CubeQuery = parseCubeQueryFromRequest(request);
 
             const response = JSON.parse(content) as CubeResponse<unknown>;
 
