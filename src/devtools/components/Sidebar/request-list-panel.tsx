@@ -23,7 +23,7 @@ export function RequestListPanel({
   showSearch,
 }: RequestListPanelProps) {
   const filteredPinned = pinned.filter((req) =>
-    JSON.stringify(req.query).toLowerCase().includes(filter.toLowerCase())
+    JSON.stringify(req.query).toLowerCase().includes(filter.toLowerCase()),
   );
 
   const filteredRequests = requests.filter((req) => {

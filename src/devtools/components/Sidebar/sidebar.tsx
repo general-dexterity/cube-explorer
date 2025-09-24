@@ -29,7 +29,7 @@ export function Sidebar({
   onClearRequests,
 }: SidebarProps) {
   const [activePanel, setActivePanel] = useState<SidebarPanel>(
-    SidebarPanel.Requests
+    SidebarPanel.Requests,
   );
   const [showSearch, setShowSearch] = useState(false);
 
@@ -45,7 +45,7 @@ export function Sidebar({
                 setActivePanel(
                   activePanel === SidebarPanel.Settings
                     ? SidebarPanel.Requests
-                    : SidebarPanel.Settings
+                    : SidebarPanel.Settings,
                 )
               }
               title={

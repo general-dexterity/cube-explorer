@@ -12,7 +12,7 @@ afterEach(() => {
 // Mock Chrome APIs using createMock
 (global as { chrome: typeof chrome }).chrome = createMock<typeof chrome>(
   {},
-  { name: 'chrome' }
+  { name: 'chrome' },
 );
 
 // Mock console methods to avoid noise in tests

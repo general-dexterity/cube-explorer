@@ -23,8 +23,8 @@ describe('Extension with Requests', () => {
     vi.mocked(
       chrome.storage.sync.get as (
         keys: string | string[],
-        callback: (items: Record<string, unknown>) => void
-      ) => void
+        callback: (items: Record<string, unknown>) => void,
+      ) => void,
     ).mockImplementation((keys, cb) => {
       if (Array.isArray(keys)) {
         const result: Record<string, unknown> = {};
@@ -65,7 +65,7 @@ describe('Extension with Requests', () => {
               segments: {},
               timeDimensions: {},
             },
-          })
+          }),
         );
       }),
     });
@@ -76,11 +76,11 @@ describe('Extension with Requests', () => {
 
     // Capture the network listener
     vi.mocked(
-      chrome.devtools.network.onRequestFinished.addListener
+      chrome.devtools.network.onRequestFinished.addListener,
     ).mockImplementation(
       (listener: (request: chrome.devtools.network.Request) => void) => {
         networkListener = listener;
-      }
+      },
     );
 
     render(<Extension />);
@@ -88,7 +88,7 @@ describe('Extension with Requests', () => {
     // Wait for settings to load and listener to be set up
     await waitFor(() => {
       expect(
-        chrome.devtools.network.onRequestFinished.addListener
+        chrome.devtools.network.onRequestFinished.addListener,
       ).toHaveBeenCalled();
     });
 
@@ -122,8 +122,8 @@ describe('Extension with Requests', () => {
     vi.mocked(
       chrome.storage.sync.get as (
         keys: string | string[],
-        callback: (items: Record<string, unknown>) => void
-      ) => void
+        callback: (items: Record<string, unknown>) => void,
+      ) => void,
     ).mockImplementation((keys, cb) => {
       if (Array.isArray(keys)) {
         const result: Record<string, unknown> = {};
@@ -164,11 +164,11 @@ describe('Extension with Requests', () => {
 
     // Capture the network listener
     vi.mocked(
-      chrome.devtools.network.onRequestFinished.addListener
+      chrome.devtools.network.onRequestFinished.addListener,
     ).mockImplementation(
       (listener: (request: chrome.devtools.network.Request) => void) => {
         networkListener = listener;
-      }
+      },
     );
 
     render(<Extension />);
@@ -176,7 +176,7 @@ describe('Extension with Requests', () => {
     // Wait for settings to load and listener to be set up
     await waitFor(() => {
       expect(
-        chrome.devtools.network.onRequestFinished.addListener
+        chrome.devtools.network.onRequestFinished.addListener,
       ).toHaveBeenCalled();
     });
 
@@ -195,7 +195,7 @@ describe('Extension with Requests', () => {
 
     // Should still show the empty state in sidebar
     expect(
-      screen.getByText('Listening for Cube Explorer requests...')
+      screen.getByText('Listening for Cube Explorer requests...'),
     ).toBeInTheDocument();
   });
 });

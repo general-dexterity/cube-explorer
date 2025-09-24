@@ -1,12 +1,22 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
-  "extends": ["ultracite"],
-  "javascript": {
-    "globals": ["chrome"]
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
   },
   "linter": {
+    "enabled": true,
     "includes": ["**/*.ts", "!./.claude/*"],
     "rules": {
+      "recommended": true,
       "suspicious": {
         "noConsole": {
           "level": "error",
@@ -17,6 +27,20 @@
       },
       "nursery": {
         "noUnknownAtRule": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["chrome"],
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
       }
     }
   }

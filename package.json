@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "ultracite lint",
-    "format": "ultracite format",
+    "lint": "biome check .",
+    "format": "biome check . --write",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -39,7 +39,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^26.1.0",
     "typescript": "~5.7.2",
-    "ultracite": "5.0.36",
     "vite": "^6.3.6",
     "vite-plugin-zip-pack": "^1.2.4",
     "vitest": "^3.2.4"

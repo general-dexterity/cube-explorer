@@ -15,7 +15,7 @@ export function RequestDetails({
   onTogglePin,
 }: RequestDetailsProps) {
   const [activeTab, setActiveTab] = useState<'query' | 'response' | 'headers'>(
-    'query'
+    'query',
   );
 
   return (

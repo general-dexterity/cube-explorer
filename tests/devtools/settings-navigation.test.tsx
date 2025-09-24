@@ -16,8 +16,8 @@ describe('Settings Panel Navigation', () => {
     vi.mocked(
       chrome.storage.sync.get as (
         keys: string | string[],
-        callback: (items: Record<string, unknown>) => void
-      ) => void
+        callback: (items: Record<string, unknown>) => void,
+      ) => void,
     ).mockImplementation((keys, cb) => {
       if (Array.isArray(keys)) {
         const result: Record<string, unknown> = {};
@@ -83,7 +83,7 @@ describe('Settings Panel Navigation', () => {
 
     // Should show the empty state
     expect(
-      screen.getByText('Listening for Cube Explorer requests...')
+      screen.getByText('Listening for Cube Explorer requests...'),
     ).toBeInTheDocument();
   });
 

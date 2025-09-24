@@ -89,7 +89,7 @@ export function PaginatedTable({ data, annotations }: PaginatedTableProps) {
                     >
                       ···
                     </Pagination.Ellipsis>
-                  )
+                  ),
                 )}
               </>
             )}

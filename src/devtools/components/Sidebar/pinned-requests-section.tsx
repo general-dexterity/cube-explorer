@@ -18,7 +18,7 @@ export function PinnedRequestsSection({
   onRequestSelect,
 }: PinnedRequestsSectionProps) {
   const filteredPinned = pinnedRequests.filter((req) =>
-    JSON.stringify(req.query).toLowerCase().includes(filter.toLowerCase())
+    JSON.stringify(req.query).toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (

@@ -28,7 +28,7 @@ const createMockResponse = (): CubeResponse<unknown> => ({
 
 // Mock request helper
 const createMockRequest = (
-  overrides: Partial<CubeRequest> = {}
+  overrides: Partial<CubeRequest> = {},
 ): CubeRequest => ({
   id: '1',
   url: 'https://localhost:4000/cubejs-api/v1/load',
@@ -204,7 +204,7 @@ describe('Sidebar', () => {
 
     // Should show "No requests" in the sidebar
     expect(
-      screen.getByText('Listening for Cube Explorer requests...')
+      screen.getByText('Listening for Cube Explorer requests...'),
     ).toBeInTheDocument();
   });
 });

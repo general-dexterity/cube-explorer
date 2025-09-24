@@ -13,7 +13,7 @@ describe('Extension', () => {
     vi.mocked(chrome.storage.sync.get).mockClear();
     vi.mocked(chrome.storage.onChanged.addListener).mockClear();
     vi.mocked(
-      chrome.devtools.network.onRequestFinished.addListener
+      chrome.devtools.network.onRequestFinished.addListener,
     ).mockClear();
   });
 
@@ -34,7 +34,7 @@ describe('Extension', () => {
         } else {
           callback({ [keys as string]: null });
         }
-      }
+      },
     );
 
     render(<Extension />);
@@ -47,7 +47,9 @@ describe('Extension', () => {
     // Check for empty state
     expect(screen.getByText('No request selected')).toBeInTheDocument();
     expect(
-      screen.getByText(/Choose a Cube request from the sidebar to view details/)
+      screen.getByText(
+        /Choose a Cube request from the sidebar to view details/,
+      ),
     ).toBeInTheDocument();
   });
 
@@ -62,7 +64,7 @@ describe('Extension', () => {
     vi.mocked(chrome.storage.sync.get).mockImplementation(
       (_keys, callback: (items: Record<string, unknown>) => void) => {
         callback({ [SETTINGS_STORAGE_KEY]: mockSettings });
-      }
+      },
     );
 
     render(<Extension />);
@@ -70,11 +72,11 @@ describe('Extension', () => {
     await waitFor(() => {
       expect(chrome.storage.sync.get).toHaveBeenCalledWith(
         [SETTINGS_STORAGE_KEY],
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(chrome.storage.sync.get).toHaveBeenCalledWith(
         [PINNED_REQUESTS_STORAGE_KEY],
-        expect.any(Function)
+        expect.any(Function),
       );
     });
   });
@@ -90,14 +92,14 @@ describe('Extension', () => {
     vi.mocked(chrome.storage.sync.get).mockImplementation(
       (_keys, callback: (items: Record<string, unknown>) => void) => {
         callback({ [SETTINGS_STORAGE_KEY]: mockSettings });
-      }
+      },
     );
 
     render(<Extension />);
 
     await waitFor(() => {
       expect(
-        chrome.devtools.network.onRequestFinished.addListener
+        chrome.devtools.network.onRequestFinished.addListener,
       ).toHaveBeenCalled();
     });
   });
@@ -118,14 +120,14 @@ describe('Extension', () => {
         } else {
           callback({ [keys as string]: null });
         }
-      }
+      },
     );
 
     render(<Extension />);
 
     await waitFor(() => {
       expect(
-        chrome.devtools.network.onRequestFinished.addListener
+        chrome.devtools.network.onRequestFinished.addListener,
       ).toHaveBeenCalled();
     });
   });
@@ -161,7 +163,7 @@ describe('Extension', () => {
           }
           callback(result);
         }
-      }
+      },
     );
 
     render(<Extension />);
@@ -169,7 +171,7 @@ describe('Extension', () => {
     await waitFor(() => {
       expect(chrome.storage.sync.get).toHaveBeenCalledWith(
         [PINNED_REQUESTS_STORAGE_KEY],
-        expect.any(Function)
+        expect.any(Function),
       );
     });
   });

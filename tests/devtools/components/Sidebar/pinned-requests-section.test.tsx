@@ -28,7 +28,7 @@ const createMockResponse = (): CubeResponse<unknown> => ({
 
 // Mock request helper
 const createMockRequest = (
-  overrides: Partial<CubeRequest> = {}
+  overrides: Partial<CubeRequest> = {},
 ): CubeRequest => ({
   id: '1',
   url: 'https://localhost:4000/cubejs-api/v1/load',
@@ -73,7 +73,7 @@ describe('PinnedRequestsSection', () => {
     expect(screen.getByText('Pinned (0)')).toBeInTheDocument();
     expect(screen.getByText('No pinned queries')).toBeInTheDocument();
     expect(
-      screen.getByText(/Click the pin button next to "Request Details"/)
+      screen.getByText(/Click the pin button next to "Request Details"/),
     ).toBeInTheDocument();
   });
 
@@ -152,7 +152,7 @@ describe('PinnedRequestsSection', () => {
     // Initially collapsed (defaultOpen={false})
     // Check that the collapsible root has closed state
     const collapsibleRoot = container.querySelector(
-      '[data-scope="collapsible"]'
+      '[data-scope="collapsible"]',
     );
     expect(collapsibleRoot).toHaveAttribute('data-state', 'closed');
 
@@ -178,7 +178,7 @@ describe('PinnedRequestsSection', () => {
       () => {
         expect(screen.queryByText('Orders')).not.toBeInTheDocument();
       },
-      { timeout: 1000 }
+      { timeout: 1000 },
     );
   });
 

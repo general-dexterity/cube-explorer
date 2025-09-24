@@ -12,7 +12,7 @@ import { Sidebar } from './components/Sidebar/sidebar';
 export default function Extension() {
   const [requests, setRequests] = useState<CubeRequest[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<CubeRequest | null>(
-    null
+    null,
   );
   const [settings, setSettings] = useState<Settings | null>(null);
   const [filter, setFilter] = useState('');
@@ -74,7 +74,7 @@ export default function Extension() {
             const query = JSON.parse(
               request.request.postData?.text ||
                 url.searchParams.get('query') ||
-                '{}'
+                '{}',
             ) as CubeQuery;
 
             const response = JSON.parse(content) as CubeResponse<unknown>;
@@ -120,7 +120,7 @@ export default function Extension() {
         savePinned([req, ...pinned]);
       }
     },
-    [pinned, savePinned]
+    [pinned, savePinned],
   );
 
   // Combine requests with pinned first, no duplicates

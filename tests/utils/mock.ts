@@ -53,7 +53,6 @@ const createProxy: {
 } = <T extends object | Mock>(name: string, base?: T): T => {
   const cache = new Map<string | number | symbol, unknown>();
   const handler: ProxyHandler<T> = {
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: shhhhh
     get: (obj, prop, receiver) => {
       const propName = prop.toString();
 
@@ -82,7 +81,6 @@ const createProxy: {
         mockedProp =
           typeof checkProp === 'function' ? vi.fn(checkProp) : checkProp;
       } else if (prop === 'constructor') {
-        // biome-ignore lint/suspicious/noEmptyBlockStatements: shhhhh
         mockedProp = () => {};
       } else {
         mockedProp = createProxy(`${name}.${propName}`);
@@ -119,7 +117,7 @@ export type MockOptions = {
 
 export const createMock = <T extends object>(
   partial: PartialFuncReturn<T> = {},
-  options: MockOptions = {}
+  options: MockOptions = {},
 ): DeepMocked<T> => {
   const { name = 'mock' } = options;
   const proxy = createProxy<T>(name, partial as T);
