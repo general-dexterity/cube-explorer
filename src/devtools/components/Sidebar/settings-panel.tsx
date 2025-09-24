@@ -2,6 +2,7 @@ import { Field } from '@ark-ui/react';
 import { useEffect, useState } from 'react';
 import { SETTINGS_STORAGE_KEY, SETTINGS_VERSION } from '../../../constants';
 import type { Settings } from '../../../types';
+import { version } from '../../../../package.json';
 
 export function SettingsPanel() {
   const [settings, setSettings] = useState<Settings>({
@@ -128,6 +129,15 @@ export function SettingsPanel() {
           >
             {saved ? 'Saved!' : 'Save'}
           </button>
+        </div>
+
+        {/* Version Display */}
+        <div className="mt-8 pt-4 border-t border-gray-200 dark:border-gray-600">
+          <div className="text-center">
+            <span className="text-gray-500 text-xs dark:text-gray-400">
+              Cube Explorer - v{version}
+            </span>
+          </div>
         </div>
       </div>
     </div>
