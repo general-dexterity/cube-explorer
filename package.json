@@ -28,7 +28,7 @@
     "@biomejs/biome": "2.2.4",
     "@crxjs/vite-plugin": "^2.0.0",
     "@cubejs-client/core": "^1.3.37",
-    "@tailwindcss/language-server": "latest",
+    "@tailwindcss/language-server": "^0.14.28",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
