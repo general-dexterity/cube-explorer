@@ -1,9 +1,4 @@
 import { test as base, chromium, type BrowserContext, type Page } from '@playwright/test';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 type ExtensionFixtures = {
   context: BrowserContext;
@@ -11,23 +6,35 @@ type ExtensionFixtures = {
 };
 
 /**
- * Extended test fixture for Chrome extension testing
+ * Extended test fixture for Chrome extension E2E testing
  *
  * Provides:
  * - context: Browser context
- * - panelPage: A page with the DevTools panel loaded
+ * - panelPage: A page with the DevTools panel loaded via HTTP
  *
- * Note: We load the panel HTML directly (not as an extension) and mock Chrome APIs.
- * This provides reliable E2E testing without the complexity of extension loading.
+ * Approach: We load the panel HTML from Vite preview server (HTTP) and mock Chrome APIs.
+ * This provides reliable E2E testing without file:// protocol limitations.
+ *
+ * Benefits:
+ * - No CORS or module loading issues
+ * - Works in headless mode with Chrome's new headless (--headless=new)
+ * - No extension ID detection needed
+ * - Fast and reliable in CI/CD
+ *
+ * @see https://playwright.dev/docs/chrome-extensions
  */
 export const test = base.extend<ExtensionFixtures>({
   context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
       headless: true,
+      channel: 'chromium', // Use bundled Chromium for best compatibility
       args: [
-        '--headless=new',
+        '--headless=new', // Chrome 128+ default, but be explicit
         '--no-sandbox',
         '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu', // Disable GPU in headless environment
+        '--disable-software-rasterizer',
         '--disable-dev-shm-usage',
       ],
     });
@@ -78,9 +85,9 @@ export const test = base.extend<ExtensionFixtures>({
       };
     });
 
-    // Load the panel HTML directly
-    const panelPath = path.join(__dirname, '../../dist/src/devtools/panel.html');
-    await page.goto(`file://${panelPath}`);
+    // Load the panel from HTTP server (started by webServer in playwright.config.ts)
+    // This avoids file:// protocol issues with Vite-bundled assets
+    await page.goto('http://localhost:4173/src/devtools/panel.html');
 
     // Wait for React to mount
     await page.waitForLoadState('domcontentloaded');
