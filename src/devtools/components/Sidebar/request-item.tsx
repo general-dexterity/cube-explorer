@@ -68,6 +68,7 @@ export function RequestItem({
       className="w-full cursor-pointer border-gray-100 border-b p-3 text-left transition-colors hover:bg-blue-50 data-selected:border-blue-300 data-error:bg-red-50 data-selected:bg-blue-100 dark:border-gray-700 data-selected:dark:border-blue-600 data-error:dark:bg-red-950 data-selected:dark:bg-gray-700 dark:hover:bg-gray-700"
       data-error={isError || undefined}
       data-selected={isSelected || undefined}
+      data-testid={`request-item-${request.id}`}
       onClick={onClick}
       tabIndex={0}
       type="button"

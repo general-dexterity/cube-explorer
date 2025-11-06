@@ -2,7 +2,10 @@ import { ChartBarIcon } from '@phosphor-icons/react';
 
 export function EmptyState() {
   return (
-    <div className="flex flex-1 items-center justify-center text-gray-500 dark:text-gray-400">
+    <div
+      className="flex flex-1 items-center justify-center text-gray-500 dark:text-gray-400"
+      data-testid="empty-state"
+    >
       <div className="text-center">
         <ChartBarIcon className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-500" />
         <h3 className="mb-1 font-medium text-gray-900 text-sm dark:text-gray-100">

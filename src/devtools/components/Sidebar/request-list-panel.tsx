@@ -58,7 +58,10 @@ export function RequestListPanel({
         </div>
       )}
 
-      <div className="flex-1 overflow-auto dark:bg-gray-800">
+      <div
+        className="flex-1 overflow-auto dark:bg-gray-800"
+        data-testid="request-list"
+      >
         {/* Pinned Section - Always displayed */}
         <PinnedRequestsSection
           filter={filter}
@@ -78,7 +81,10 @@ export function RequestListPanel({
             No requests match your filter
           </div>
         ) : requests.length === 0 ? (
-          <div className="p-4 text-center text-gray-500 text-xs dark:text-gray-400">
+          <div
+            className="p-4 text-center text-gray-500 text-xs dark:text-gray-400"
+            data-testid="listening-message"
+          >
             Listening for Cube Explorer requests...
           </div>
         ) : (

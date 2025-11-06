@@ -41,6 +41,7 @@ export function Sidebar({
           <div className="flex items-center gap-2">
             <button
               className="p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              data-testid="settings-toggle-button"
               onClick={() =>
                 setActivePanel(
                   activePanel === SidebarPanel.Settings
@@ -90,7 +91,9 @@ export function Sidebar({
 
       {/* Content */}
       {activePanel === SidebarPanel.Settings ? (
-        <SettingsPanel />
+        <div data-testid="settings-panel">
+          <SettingsPanel />
+        </div>
       ) : (
         <RequestListPanel
           filter={filter}

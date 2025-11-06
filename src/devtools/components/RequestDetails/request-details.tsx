@@ -19,7 +19,7 @@ export function RequestDetails({
   );
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col" data-testid="request-details">
       {/* Header */}
       <div className="border-gray-200 border-b bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
         <div className="flex items-center justify-between">
@@ -29,6 +29,7 @@ export function RequestDetails({
             </h3>
             <button
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              data-testid="pin-button"
               onClick={() => onTogglePin(request)}
               title={isPinned ? 'Unpin request' : 'Pin request'}
             >
@@ -55,6 +56,7 @@ export function RequestDetails({
             <button
               className="border-transparent border-b-2 px-1 py-2 font-medium text-gray-500 text-xs capitalize transition-colors hover:border-gray-300 hover:text-gray-700 data-active:border-blue-500 data-active:text-blue-600 dark:text-gray-400 data-active:dark:text-blue-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
               data-active={activeTab === tab || undefined}
+              data-testid={`tab-${tab}`}
               key={tab}
               onClick={() => setActiveTab(tab)}
               type="button"
@@ -66,7 +68,10 @@ export function RequestDetails({
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-auto p-4 dark:bg-gray-900">
+      <div
+        className="flex-1 overflow-auto p-4 dark:bg-gray-900"
+        data-testid={`tab-content-${activeTab}`}
+      >
         {activeTab === 'query' && <QueryTab request={request} />}
         {activeTab === 'response' && <ResponseTab request={request} />}
         {activeTab === 'headers' && <HeadersTab request={request} />}
