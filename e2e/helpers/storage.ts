@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import type { Settings } from '../../src/types';
+import type { CubeRequest, Settings } from '../../src/types';
 
 const SETTINGS_STORAGE_KEY = 'cubeExplorerSettings_v1.20250118';
 const PINNED_REQUESTS_STORAGE_KEY = 'cubeExplorerPinnedRequests_v1.20250821';
@@ -15,7 +15,7 @@ export async function setSettings(page: Page, settings: Partial<Settings>) {
     {
       key: SETTINGS_STORAGE_KEY,
       value: settings,
-    }
+    },
   );
 }
 
@@ -31,7 +31,7 @@ export async function getSettings(page: Page): Promise<Settings | undefined> {
         });
       });
     },
-    { key: SETTINGS_STORAGE_KEY }
+    { key: SETTINGS_STORAGE_KEY },
   );
 }
 
@@ -47,7 +47,7 @@ export async function clearStorage(page: Page) {
 /**
  * Set pinned requests in Chrome storage
  */
-export async function setPinnedRequests(page: Page, requests: any[]) {
+export async function setPinnedRequests(page: Page, requests: CubeRequest[]) {
   await page.evaluate(
     ({ key, value }) => {
       chrome.storage.sync.set({ [key]: value });
@@ -55,14 +55,14 @@ export async function setPinnedRequests(page: Page, requests: any[]) {
     {
       key: PINNED_REQUESTS_STORAGE_KEY,
       value: requests,
-    }
+    },
   );
 }
 
 /**
  * Get pinned requests from Chrome storage
  */
-export async function getPinnedRequests(page: Page): Promise<any[]> {
+export async function getPinnedRequests(page: Page): Promise<CubeRequest[]> {
   return page.evaluate(
     ({ key }) => {
       return new Promise((resolve) => {
@@ -71,6 +71,6 @@ export async function getPinnedRequests(page: Page): Promise<any[]> {
         });
       });
     },
-    { key: PINNED_REQUESTS_STORAGE_KEY }
+    { key: PINNED_REQUESTS_STORAGE_KEY },
   );
 }

@@ -4,7 +4,9 @@ import type { CubeRequest } from '../../src/types';
 /**
  * Generate a mock Cube API request
  */
-export function createMockRequest(overrides: Partial<CubeRequest> = {}): CubeRequest {
+export function createMockRequest(
+  overrides: Partial<CubeRequest> = {},
+): CubeRequest {
   const id = overrides.id || `request-${Date.now()}`;
   const timestamp = overrides.timestamp || Date.now();
 
@@ -40,7 +42,7 @@ export async function simulateNetworkEvent(page: Page, request: CubeRequest) {
         type: 'cube-request',
         data: req,
       },
-      '*'
+      '*',
     );
   }, request);
 }
@@ -48,7 +50,9 @@ export async function simulateNetworkEvent(page: Page, request: CubeRequest) {
 /**
  * Create a mock request with SQL data
  */
-export function createMockRequestWithSQL(overrides: Partial<CubeRequest> = {}): CubeRequest {
+export function createMockRequestWithSQL(
+  overrides: Partial<CubeRequest> = {},
+): CubeRequest {
   return createMockRequest({
     url: 'https://api.example.com/cubejs-api/v1/sql',
     query: {
@@ -68,7 +72,9 @@ export function createMockRequestWithSQL(overrides: Partial<CubeRequest> = {}): 
 /**
  * Create a mock request with error response
  */
-export function createMockRequestWithError(overrides: Partial<CubeRequest> = {}): CubeRequest {
+export function createMockRequestWithError(
+  overrides: Partial<CubeRequest> = {},
+): CubeRequest {
   return createMockRequest({
     status: 400,
     response: {

@@ -1,4 +1,9 @@
-import { test as base, chromium, type BrowserContext, type Page } from '@playwright/test';
+import {
+  type BrowserContext,
+  test as base,
+  chromium,
+  type Page,
+} from '@playwright/test';
 
 type ExtensionFixtures = {
   context: BrowserContext;
@@ -24,7 +29,7 @@ type ExtensionFixtures = {
  * @see https://playwright.dev/docs/chrome-extensions
  */
 export const test = base.extend<ExtensionFixtures>({
-  context: async ({}, use) => {
+  context: async (_, use) => {
     const context = await chromium.launchPersistentContext('', {
       headless: true,
       channel: 'chromium', // Use bundled Chromium for best compatibility
@@ -48,13 +53,18 @@ export const test = base.extend<ExtensionFixtures>({
 
     // Mock Chrome APIs before loading the panel
     await page.addInitScript(() => {
+      type StorageResult = Record<string, unknown>;
+
       // Mock chrome.storage API
-      (window as any).chrome = {
+      (window as Window & { chrome: typeof chrome }).chrome = {
         storage: {
           sync: {
-            get: (keys: string[], callback: (result: any) => void) => {
+            get: (
+              keys: string[],
+              callback: (result: StorageResult) => void,
+            ) => {
               // Return empty/default values
-              const result: any = {};
+              const result: StorageResult = {};
               if (Array.isArray(keys)) {
                 for (const key of keys) {
                   result[key] = undefined;
@@ -62,7 +72,7 @@ export const test = base.extend<ExtensionFixtures>({
               }
               setTimeout(() => callback(result), 0);
             },
-            set: (items: any, callback?: () => void) => {
+            set: (_items: StorageResult, callback?: () => void) => {
               setTimeout(() => callback?.(), 0);
             },
             clear: (callback?: () => void) => {
@@ -82,7 +92,7 @@ export const test = base.extend<ExtensionFixtures>({
             },
           },
         },
-      };
+      } as typeof chrome;
     });
 
     // Load the panel from HTTP server (started by webServer in playwright.config.ts)

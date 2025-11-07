@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { parseCubeQueryFromRequest } from './parse-cube-query';
 import { createMock } from '../../../tests/utils/mock';
+import { parseCubeQueryFromRequest } from './parse-cube-query';
 
 describe('parseCubeQueryFromRequest', () => {
   const baseUrl = 'http://localhost:4000/cubejs-api/v1/load';
@@ -76,4 +76,3 @@ describe('parseCubeQueryFromRequest', () => {
     expect(q.measures).toBeUndefined();
   });
 });
-
