@@ -60,13 +60,17 @@ export const test = base.extend<ExtensionFixtures>({
       const networkListeners: Array<(request: unknown) => void> = [];
 
       // Expose helper to manually trigger network requests from tests
-      (window as Window & { triggerCubeRequest: (mockData: {
-        url: string;
-        query: unknown;
-        response: unknown;
-        duration?: number;
-        status?: number;
-      }) => void }).triggerCubeRequest = (mockData) => {
+      (
+        window as Window & {
+          triggerCubeRequest: (mockData: {
+            url: string;
+            query: unknown;
+            response: unknown;
+            duration?: number;
+            status?: number;
+          }) => void;
+        }
+      ).triggerCubeRequest = (mockData) => {
         const mockRequest = {
           request: {
             url: mockData.url,

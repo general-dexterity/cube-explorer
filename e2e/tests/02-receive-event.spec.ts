@@ -10,13 +10,17 @@ test.describe('Receive Event', () => {
 
     // Trigger a mock network request using our test helper
     await panelPage.evaluate(() => {
-      (window as Window & { triggerCubeRequest: (mockData: {
-        url: string;
-        query: unknown;
-        response: unknown;
-        duration?: number;
-        status?: number;
-      }) => void }).triggerCubeRequest({
+      (
+        window as Window & {
+          triggerCubeRequest: (mockData: {
+            url: string;
+            query: unknown;
+            response: unknown;
+            duration?: number;
+            status?: number;
+          }) => void;
+        }
+      ).triggerCubeRequest({
         url: 'https://api.example.com/cubejs-api/v1/load',
         query: {
           measures: ['Orders.count'],
