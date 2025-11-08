@@ -56,6 +56,40 @@ export const test = base.extend<ExtensionFixtures>({
     await page.addInitScript(() => {
       type StorageResult = Record<string, unknown>;
 
+      // Store network request listeners for testing
+      const networkListeners: Array<(request: unknown) => void> = [];
+
+      // Expose helper to manually trigger network requests from tests
+      (window as Window & { triggerCubeRequest: (mockData: {
+        url: string;
+        query: unknown;
+        response: unknown;
+        duration?: number;
+        status?: number;
+      }) => void }).triggerCubeRequest = (mockData) => {
+        const mockRequest = {
+          request: {
+            url: mockData.url,
+            postData: {
+              text: JSON.stringify(mockData.query),
+            },
+          },
+          response: {
+            status: mockData.status || 200,
+          },
+          time: mockData.duration || 100,
+          getContent: (callback: (content: string) => void) => {
+            setTimeout(() => {
+              callback(JSON.stringify(mockData.response));
+            }, 0);
+          },
+        };
+
+        for (const listener of networkListeners) {
+          listener(mockRequest);
+        }
+      };
+
       // Mock chrome.storage API
       (window as Window & { chrome: typeof chrome }).chrome = {
         storage: {
@@ -64,11 +98,19 @@ export const test = base.extend<ExtensionFixtures>({
               keys: string[],
               callback: (result: StorageResult) => void,
             ) => {
-              // Return empty/default values
+              // Return settings that match our test API URL
               const result: StorageResult = {};
               if (Array.isArray(keys)) {
                 for (const key of keys) {
-                  result[key] = undefined;
+                  if (key === 'cubeExplorerSettings_v1.20250118') {
+                    result[key] = {
+                      urls: ['https://api.example.com/cubejs-api/v1'],
+                      autoCapture: true,
+                      version: 1,
+                    };
+                  } else {
+                    result[key] = undefined;
+                  }
                 }
               }
               setTimeout(() => callback(result), 0);
@@ -88,8 +130,15 @@ export const test = base.extend<ExtensionFixtures>({
         devtools: {
           network: {
             onRequestFinished: {
-              addListener: () => {},
-              removeListener: () => {},
+              addListener: (listener: (request: unknown) => void) => {
+                networkListeners.push(listener);
+              },
+              removeListener: (listener: (request: unknown) => void) => {
+                const index = networkListeners.indexOf(listener);
+                if (index > -1) {
+                  networkListeners.splice(index, 1);
+                }
+              },
             },
           },
         },
