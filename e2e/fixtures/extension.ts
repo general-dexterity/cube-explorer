@@ -29,7 +29,8 @@ type ExtensionFixtures = {
  * @see https://playwright.dev/docs/chrome-extensions
  */
 export const test = base.extend<ExtensionFixtures>({
-  context: async (_, use) => {
+  // biome-ignore lint/correctness/noEmptyPattern: Playwright requires object destructuring even when unused
+  context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
       headless: true,
       channel: 'chromium', // Use bundled Chromium for best compatibility
