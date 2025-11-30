@@ -1,0 +1,50 @@
+cubes:
+  - name: orders
+    sql_table: orders
+
+    joins:
+      - name: customers
+        sql: "{CUBE}.customer_id = {customers.id}"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: status
+        sql: status
+        type: string
+
+      - name: created_at
+        sql: created_at
+        type: time
+
+      - name: completed_at
+        sql: completed_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: completed_count
+        type: count
+        filters:
+          - sql: "{CUBE}.status = 'completed'"
+
+      - name: processing_count
+        type: count
+        filters:
+          - sql: "{CUBE}.status = 'processing'"
+
+      - name: shipped_count
+        type: count
+        filters:
+          - sql: "{CUBE}.status = 'shipped'"
+
+      - name: pending_count
+        type: count
+        filters:
+          - sql: "{CUBE}.status = 'pending'"

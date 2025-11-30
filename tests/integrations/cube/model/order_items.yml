@@ -1,0 +1,46 @@
+cubes:
+  - name: order_items
+    sql_table: order_items
+
+    joins:
+      - name: orders
+        sql: "{CUBE}.order_id = {orders.id}"
+        relationship: many_to_one
+
+      - name: products
+        sql: "{CUBE}.product_id = {products.id}"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: quantity
+        sql: quantity
+        type: number
+
+      - name: price
+        sql: price
+        type: number
+
+    measures:
+      - name: count
+        type: count
+
+      - name: total_quantity
+        sql: quantity
+        type: sum
+
+      - name: total_revenue
+        sql: "{CUBE}.price * {CUBE}.quantity"
+        type: sum
+
+      - name: avg_order_value
+        sql: "{CUBE}.price * {CUBE}.quantity"
+        type: avg
+
+      - name: unique_products
+        sql: product_id
+        type: count_distinct

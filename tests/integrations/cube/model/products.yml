@@ -1,0 +1,41 @@
+cubes:
+  - name: products
+    sql_table: products
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: name
+        sql: name
+        type: string
+
+      - name: category
+        sql: category
+        type: string
+
+      - name: price
+        sql: price
+        type: number
+
+      - name: created_at
+        sql: created_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: avg_price
+        sql: price
+        type: avg
+
+      - name: min_price
+        sql: price
+        type: min
+
+      - name: max_price
+        sql: price
+        type: max
