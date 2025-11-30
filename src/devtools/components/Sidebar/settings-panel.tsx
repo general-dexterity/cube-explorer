@@ -15,8 +15,11 @@ export function SettingsPanel() {
   useEffect(() => {
     // Load existing settings
     chrome.storage.sync.get([SETTINGS_STORAGE_KEY], (result) => {
-      if (result[SETTINGS_STORAGE_KEY]) {
-        setSettings(result[SETTINGS_STORAGE_KEY]);
+      const storedSettings = result[SETTINGS_STORAGE_KEY] as
+        | Settings
+        | undefined;
+      if (storedSettings) {
+        setSettings(storedSettings);
       }
     });
   }, []);

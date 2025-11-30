@@ -29,9 +29,12 @@ export default function Extension() {
       };
 
       // TODO: Migrations
-      const settings = {
+      const storedSettings = result[SETTINGS_STORAGE_KEY] as
+        | Partial<Settings>
+        | undefined;
+      const settings: Settings = {
         ...defaultSettings,
-        ...result[SETTINGS_STORAGE_KEY],
+        ...storedSettings,
       };
 
       setSettings(settings);
@@ -39,16 +42,22 @@ export default function Extension() {
 
     // Load pinned requests
     chrome.storage.sync.get([PINNED_REQUESTS_STORAGE_KEY], (result) => {
-      setPinned(result[PINNED_REQUESTS_STORAGE_KEY] || []);
+      const storedPinned = result[PINNED_REQUESTS_STORAGE_KEY] as
+        | CubeRequest[]
+        | undefined;
+      setPinned(storedPinned || []);
     });
 
     // Listen for storage changes
     chrome.storage.onChanged.addListener((changes) => {
       if (changes[SETTINGS_STORAGE_KEY]) {
-        setSettings(changes[SETTINGS_STORAGE_KEY].newValue);
+        setSettings(changes[SETTINGS_STORAGE_KEY].newValue as Settings);
       }
       if (changes[PINNED_REQUESTS_STORAGE_KEY]) {
-        setPinned(changes[PINNED_REQUESTS_STORAGE_KEY].newValue || []);
+        const newPinned = changes[PINNED_REQUESTS_STORAGE_KEY].newValue as
+          | CubeRequest[]
+          | undefined;
+        setPinned(newPinned || []);
       }
     });
   }, []);
