@@ -7,5 +7,6 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     nodejs
     pnpm_10
+    bun
   ];
 }
