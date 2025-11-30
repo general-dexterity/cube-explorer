@@ -266,31 +266,61 @@ async function openBrowser(url: string) {
   Bun.spawn([command, url], { stdout: 'ignore', stderr: 'ignore' });
 }
 
+function loadEnv(): Record<string, string> {
+  try {
+    const fs = require('node:fs');
+    const envPath = new URL('../.env', import.meta.url).pathname;
+    return Object.fromEntries(
+      fs
+        .readFileSync(envPath, 'utf8')
+        .trim()
+        .split('\n')
+        .map((line: string) => {
+          const idx = line.indexOf('=');
+          return [line.slice(0, idx), line.slice(idx + 1)];
+        }),
+    );
+  } catch {
+    return {};
+  }
+}
+
 async function main() {
+  const env = loadEnv();
+
   console.log(colors.blue('========================================'));
   console.log(colors.blue('Chrome Web Store API Token Generator'));
   console.log(colors.blue('========================================'));
   console.log();
 
-  console.log(colors.yellow('Prerequisites:'));
-  console.log('1. Go to https://console.cloud.google.com/');
-  console.log('2. Create or select a project');
-  console.log("3. Enable the 'Chrome Web Store API'");
-  console.log('4. Go to APIs & Services > Credentials');
-  console.log('5. Create OAuth 2.0 Client ID (Web application type)');
-  console.log(`6. Add '${REDIRECT_URI}' as an Authorized redirect URI`);
-  console.log();
+  let clientId = env.CHROME_CLIENT_ID;
+  let clientSecret = env.CHROME_CLIENT_SECRET;
 
-  const clientId = await prompt('Enter your Google Client ID: ');
-  if (!clientId) {
-    console.error(colors.red('Error: Client ID is required'));
-    process.exit(1);
-  }
+  if (clientId && clientSecret) {
+    console.log(colors.green('Found credentials in .env file'));
+    console.log(`Client ID: ${clientId.slice(0, 20)}...`);
+    console.log();
+  } else {
+    console.log(colors.yellow('Prerequisites:'));
+    console.log('1. Go to https://console.cloud.google.com/');
+    console.log('2. Create or select a project');
+    console.log("3. Enable the 'Chrome Web Store API'");
+    console.log('4. Go to APIs & Services > Credentials');
+    console.log('5. Create OAuth 2.0 Client ID (Web application type)');
+    console.log(`6. Add '${REDIRECT_URI}' as an Authorized redirect URI`);
+    console.log();
 
-  const clientSecret = await promptSecret('Enter your Google Client Secret: ');
-  if (!clientSecret) {
-    console.error(colors.red('Error: Client Secret is required'));
-    process.exit(1);
+    clientId = await prompt('Enter your Google Client ID: ');
+    if (!clientId) {
+      console.error(colors.red('Error: Client ID is required'));
+      process.exit(1);
+    }
+
+    clientSecret = await promptSecret('Enter your Google Client Secret: ');
+    if (!clientSecret) {
+      console.error(colors.red('Error: Client Secret is required'));
+      process.exit(1);
+    }
   }
 
   console.log();
