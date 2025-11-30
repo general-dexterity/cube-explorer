@@ -73,13 +73,15 @@ const createProxy: {
         return cache.get(prop);
       }
 
-      const checkProp = obj[prop];
+      const checkProp = (obj as Record<string | symbol, unknown>)[prop];
 
       let mockedProp: unknown;
 
       if (prop in obj) {
         mockedProp =
-          typeof checkProp === 'function' ? vi.fn(checkProp) : checkProp;
+          typeof checkProp === 'function'
+            ? vi.fn(checkProp as (...args: unknown[]) => unknown)
+            : checkProp;
       } else if (prop === 'constructor') {
         mockedProp = () => {};
       } else {
