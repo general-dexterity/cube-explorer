@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vitest/globals", "vitest-environment-web-ext/types", "chrome"],
+    "paths": {
+      "@/*": ["../../src/*"]
+    }
+  },
+  "include": ["**/*.ts"]
+}

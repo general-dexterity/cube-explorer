@@ -2,8 +2,8 @@
 
 ## Commands
 - **Build**: `pnpm build` (runs TypeScript compilation + Vite build)
-- **Lint**: `pnpm lint` (uses ultracite, **NEVER** call `biome` directly)
-- **Format**: `pnpm format` (uses ultracite, **NEVER** call `biome` directly)
+- **Lint**: `pnpm lint` (runs `biome check .`)
+- **Format**: `pnpm format` (runs `biome check --write .`)
 - **Typecheck**: `pnpm typecheck`
 - **Test**: `pnpm test` (vitest run) or `pnpm test:watch` (vitest watch)
 - **Single test**: Add pattern after test command, e.g., `pnpm test component-name`
@@ -20,7 +20,7 @@
 - **Package manager**: Use `pnpm` exclusively
 - **TypeScript**: Strict null checks enabled, use official CubeJS types
 - **Imports**: Use `@/` alias for `src/` directory, relative paths for local components
-- **Formatting**: Biome via ultracite (extends ultracite config)
+- **Formatting**: Biome (vanilla `biome.jsonc` + `@aliou/biome-plugins` GritQL plugins)
 - **Error handling**: Console.log/warn disabled, only console.info/error allowed
 - **Components**: React functional components with TypeScript
 - **File naming**: React components use `PascalCase.tsx`, hooks use `useSomething.ts`

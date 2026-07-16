@@ -12,6 +12,7 @@ node_modules
 dist
 release
 dist-ssr
+.vitest-web-ext-cache
 *.local
 
 # Editor directories and files

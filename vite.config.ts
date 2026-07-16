@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import zip from 'vite-plugin-zip-pack';
-import manifestConfig from './manifest.config.js';
+import manifestConfig from './manifest.config';
 import { name, version } from './package.json';
 
 const EXTENSION_NAME = 'Cube Explorer';

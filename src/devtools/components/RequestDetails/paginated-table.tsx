@@ -1,5 +1,5 @@
 import { Pagination } from '@ark-ui/react/pagination';
-import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { QueryAnnotations } from '../../../types';
 import { DataTable } from './data-table';
@@ -35,7 +35,7 @@ export function PaginatedTable({ data, annotations }: PaginatedTableProps) {
               onClick={() => setPageIndex(pageIndex - 1)}
               type="button"
             >
-              <CaretLeft size={14} />
+              <CaretLeftIcon size={14} />
             </button>
             <button
               className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
@@ -43,7 +43,7 @@ export function PaginatedTable({ data, annotations }: PaginatedTableProps) {
               onClick={() => setPageIndex(pageIndex + 1)}
               type="button"
             >
-              <CaretRight size={14} />
+              <CaretRightIcon size={14} />
             </button>
           </div>
         </div>
@@ -66,37 +66,41 @@ export function PaginatedTable({ data, annotations }: PaginatedTableProps) {
           pageSize={ITEMS_PER_PAGE}
         >
           <Pagination.PrevTrigger className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800">
-            <CaretLeft size={16} />
+            <CaretLeftIcon size={16} />
           </Pagination.PrevTrigger>
 
           <Pagination.Context>
             {(pagination) => (
               <>
-                {pagination.pages.map((page, index) =>
-                  page.type === 'page' ? (
-                    <Pagination.Item
-                      key={index}
-                      {...page}
-                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-gray-300 bg-white text-gray-600 text-xs transition-colors hover:bg-gray-100 data-[selected]:border-blue-500 data-[selected]:bg-blue-100 data-[selected]:text-blue-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 data-[selected]:dark:bg-blue-500/20 data-[selected]:dark:text-blue-400"
-                    >
-                      {page.value}
-                    </Pagination.Item>
-                  ) : (
+                {pagination.pages.map((page, index) => {
+                  if (page.type === 'page') {
+                    return (
+                      <Pagination.Item
+                        key={page.value}
+                        {...page}
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-gray-300 bg-white text-gray-600 text-xs transition-colors hover:bg-gray-100 data-[selected]:border-blue-500 data-[selected]:bg-blue-100 data-[selected]:text-blue-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 data-[selected]:dark:bg-blue-500/20 data-[selected]:dark:text-blue-400"
+                      >
+                        {page.value}
+                      </Pagination.Item>
+                    );
+                  }
+                  const ellipsisKey = `ellipsis-${index}`;
+                  return (
                     <Pagination.Ellipsis
                       className="flex h-8 w-8 items-center justify-center text-gray-400 dark:text-gray-500"
                       index={index}
-                      key={index}
+                      key={ellipsisKey}
                     >
                       ···
                     </Pagination.Ellipsis>
-                  ),
-                )}
+                  );
+                })}
               </>
             )}
           </Pagination.Context>
 
           <Pagination.NextTrigger className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800">
-            <CaretRight size={16} />
+            <CaretRightIcon size={16} />
           </Pagination.NextTrigger>
         </Pagination.Root>
       )}
