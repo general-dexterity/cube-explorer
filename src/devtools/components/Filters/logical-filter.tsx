@@ -18,7 +18,7 @@ export function LogicalFilter({ type, filters }: LogicalFilterProps) {
       </span>
       <span className="text-yellow-600 dark:text-yellow-400">(</span>
       {filters.map((subFilter, i) => (
-        <React.Fragment key={`${type}-${i}-${JSON.stringify(subFilter)}`}>
+        <React.Fragment key={`${type}-${JSON.stringify(subFilter)}`}>
           {i > 0 && (
             <span className="text-xs text-yellow-600 dark:text-yellow-400">
               {separator}

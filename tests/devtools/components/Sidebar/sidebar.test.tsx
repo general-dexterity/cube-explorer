@@ -144,7 +144,9 @@ describe('Sidebar', () => {
 
     // Click on the request (identified by the cube name)
     const requestElement = screen.getByText('Orders');
-    fireEvent.click(requestElement.closest('button')!);
+    const button = requestElement.closest('button');
+    expect(button).not.toBeNull();
+    fireEvent.click(button as HTMLElement);
 
     expect(props.onRequestSelect).toHaveBeenCalledWith(mockRequest);
   });

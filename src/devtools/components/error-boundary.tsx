@@ -47,6 +47,7 @@ export class ErrorBoundary extends Component<
               <div className="mb-4 flex items-center">
                 <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
                   <svg
+                    aria-hidden="true"
                     className="h-5 w-5 text-red-600 dark:text-red-400"
                     fill="none"
                     stroke="currentColor"
@@ -98,6 +99,7 @@ export class ErrorBoundary extends Component<
                 )}
 
                 <button
+                  type="button"
                   className="mt-4 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600"
                   onClick={() => window.location.reload()}
                 >
@@ -115,6 +117,7 @@ export class ErrorBoundary extends Component<
             <div className="mb-4 flex justify-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
                 <svg
+                  aria-hidden="true"
                   className="h-6 w-6 text-red-600 dark:text-red-400"
                   fill="none"
                   stroke="currentColor"
@@ -140,6 +143,7 @@ export class ErrorBoundary extends Component<
             </p>
 
             <button
+              type="button"
               className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
               onClick={() => window.location.reload()}
             >

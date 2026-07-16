@@ -28,6 +28,7 @@ export function RequestDetails({
               Request Details
             </h3>
             <button
+              type="button"
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               onClick={() => onTogglePin(request)}
               title={isPinned ? 'Unpin request' : 'Pin request'}

@@ -1,23 +1,38 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.4/schema.json",
+  "plugins": [
+    "./node_modules/@aliou/biome-plugins/plugins/phosphor-icon-suffix.grit",
+    "./node_modules/@aliou/biome-plugins/plugins/no-interpolated-classname.grit",
+    "./node_modules/@aliou/biome-plugins/plugins/no-js-import-extension.grit",
+    "./node_modules/@aliou/biome-plugins/plugins/no-ts-import-extension.grit",
+    {
+      "path": "./node_modules/@aliou/biome-plugins/plugins/no-emojis.grit",
+      "includes": ["src/**", "tests/**"]
+    },
+    "./node_modules/@aliou/biome-plugins/plugins/no-empty-catch.grit",
+    "./node_modules/@aliou/biome-plugins/plugins/no-inner-types.grit",
+    "./node_modules/@aliou/biome-plugins/plugins/no-buried-await.grit",
+    "./node_modules/@aliou/biome-plugins/plugins/no-inline-imports.grit"
+  ],
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false,
+    "ignoreUnknown": true,
     "includes": ["**", "!tests/integrations"]
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "indentWidth": 2
   },
   "linter": {
     "enabled": true,
-    "includes": ["**/*.ts", "!./.claude/*"],
+    "includes": ["**/*.ts", "**/*.tsx", "!./.claude/*"],
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "suspicious": {
         "noConsole": {
           "level": "error",

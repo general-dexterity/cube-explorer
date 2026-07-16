@@ -12,11 +12,8 @@ export function FilterSection({ filters }: FilterSectionProps) {
         Filters
       </h4>
       <div className="flex flex-wrap gap-1">
-        {filters.map((filter, index) => (
-          <FilterBadge
-            filter={filter}
-            key={`filter-${index}-${JSON.stringify(filter)}`}
-          />
+        {filters.map((filter) => (
+          <FilterBadge filter={filter} key={JSON.stringify(filter)} />
         ))}
       </div>
     </div>

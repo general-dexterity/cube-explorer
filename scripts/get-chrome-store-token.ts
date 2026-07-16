@@ -14,6 +14,8 @@
  * Usage: bun scripts/get-chrome-store-token.ts
  */
 
+import fs from 'node:fs';
+
 const REDIRECT_URI = 'http://localhost:8085';
 const SCOPE = 'https://www.googleapis.com/auth/chromewebstore';
 const AUTH_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -268,7 +270,6 @@ async function openBrowser(url: string) {
 
 function loadEnv(): Record<string, string> {
   try {
-    const fs = require('node:fs');
     const envPath = new URL('../.env', import.meta.url).pathname;
     return Object.fromEntries(
       fs

@@ -69,6 +69,7 @@ export function SettingsPanel() {
               const isDefaultUrl =
                 url === 'http://localhost:4000/cubejs-api/v1' && index === 0;
               return (
+                // biome-ignore lint/suspicious/noArrayIndexKey: URLs are edited in place; index keys preserve input focus across edits
                 <div className="flex gap-1" key={index}>
                   <Field.Root className="flex-1 flex">
                     <Field.Input
